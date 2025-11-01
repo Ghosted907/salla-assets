@@ -5,6 +5,18 @@
   } catch(e) {}
 })();
 
+(function(){
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-HTDF3R6L86';
+  s.onload = function(){
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', 'G-HTDF3R6L86');
+  };
+  document.head.appendChild(s);
+})();
 
 
 Salla.onReady(function () {
