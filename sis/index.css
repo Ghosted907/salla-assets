@@ -1,0 +1,31 @@
+.salla-jeje { display:block; }
+.custom-sbc-column{
+  align-items:flex-end !important;
+  text-align:right !important;
+  direction:rtl;
+}
+.custom-sbc-column .sbc-title{
+  width:100%;
+  font-weight:600;
+  font-size:1rem;
+  margin:0;
+  text-align:right !important;
+}
+body.index{
+background-color:#ebe6dc !important;
+}
+.custom-sbc-column > * + *{ margin-top:20px; }
+.custom-sfda .sbc-title{ margin-bottom:20px; }
+.custom-verified-by .sbc-title{ margin-bottom:20px; }
+.custom-sfda, .custom-sbc-logo, .custom-verified-by{ margin-left:auto !important; }
+.custom-sfda img, .custom-sbc-logo img, .custom-verified-by img{
+  width:280px !important;
+  max-width:100% !important;
+  height:auto !important;
+  display:block !important;
+}
+@media (min-width:1024px){
+  .custom-sfda img, .custom-sbc-logo img, .custom-verified-by img{
+    width:260px !important;
+  }
+}
