@@ -5,18 +5,18 @@
   } catch(e) {}
 })();
 
-(function(){
-  var s = document.createElement('script');
-  s.async = true;
-  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-HTDF3R6L86';
-  s.onload = function(){
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function(){ dataLayer.push(arguments); };
-    gtag('js', new Date());
-    gtag('config', 'G-HTDF3R6L86');
-  };
-  document.head.appendChild(s);
-})();
+(function(ID){
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({'gtm.start': Date.now(), event: 'gtm.js'});
+  var f=document.getElementsByTagName('script')[0], j=document.createElement('script');
+  j.async=true; j.src='https://www.googletagmanager.com/gtm.js?id='+ID;
+  f.parentNode.insertBefore(j,f);
+  var ns=document.createElement('noscript');
+  ns.innerHTML='<iframe src="https://www.googletagmanager.com/ns.html?id='+ID+'" height="0" width="0" style="display:none;visibility:hidden"></iframe>';
+  document.addEventListener('DOMContentLoaded',function(){
+    if(document.body) document.body.insertAdjacentElement('afterbegin', ns);
+  });
+})('GTM-NDHPZ6RX');
 
 
 Salla.onReady(function () {
