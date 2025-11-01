@@ -4,7 +4,7 @@
     console.log('❤️');
   } catch(e) {}
 })();
-
+/*
 (function(ID){
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({'gtm.start': Date.now(), event: 'gtm.js'});
@@ -17,7 +17,7 @@
     if(document.body) document.body.insertAdjacentElement('afterbegin', ns);
   });
 })('GTM-NDHPZ6RX');
-
+*/
 
 Salla.onReady(function () {
   if (!document.querySelector('.custom-sbc-column')) {
