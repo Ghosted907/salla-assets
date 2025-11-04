@@ -1,50 +1,117 @@
+<div id="jeje-testi" dir="rtl" aria-label="تجارب العملاء">
+  <div class="dash"></div>
+  <div class="cap">شاركني رأيك</div>
 
+  <div class="viewport">
+    <ul class="stream" id="jeje-stream"></ul>
+    <!-- نموذج الإرسال -->
+    <div id="jeje-form">
+      <input type="text" id="f-name" placeholder="اسمك">
+      <textarea id="f-msg" rows="3" placeholder="اكتب رأيك"></textarea>
+      <button class="send" id="f-send">إرسال</button>
+      <div id="jeje-ok" style="display:none;margin-top:8px;color:#0a7">تم إرسال مشاركتك.</div>
+      <div id="jeje-err" style="display:none;margin-top:8px;color:#c00">تعذر الإرسال.</div>
+    </div>
+  </div>
+
+  <div id="jeje-fab" title="شارك رأيك">
+    <div class="plus">+</div>
+  </div>
+
+  <div id="jeje-menu">
+    <button data-act="form">اكتب رأيك الآن</button>
+    <button data-act="whatsapp">مشاركة عبر واتساب</button>
+    <button data-act="email">إرسال بريد إلكتروني</button>
+  </div>
+
+  <div id="jeje-icon">☎️</div>
+</div>
+
+<script>
 (function(){
-  try {
-    console.log('❤️');
-  } catch(e) {}
-})();
-/*
-(function(ID){
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({'gtm.start': Date.now(), event: 'gtm.js'});
-  var f=document.getElementsByTagName('script')[0], j=document.createElement('script');
-  j.async=true; j.src='https://www.googletagmanager.com/gtm.js?id='+ID;
-  f.parentNode.insertBefore(j,f);
-  var ns=document.createElement('noscript');
-  ns.innerHTML='<iframe src="https://www.googletagmanager.com/ns.html?id='+ID+'" height="0" width="0" style="display:none;visibility:hidden"></iframe>';
-  document.addEventListener('DOMContentLoaded',function(){
-    if(document.body) document.body.insertAdjacentElement('afterbegin', ns);
-  });
-})('GTM-NDHPZ6RX');
-*/
+  
+  const ENDPOINT = "https://your-endpoint.example/submit";
 
-Salla.onReady(function () {
-  if (!document.querySelector('.custom-sbc-column')) {
-    const appsIcons = document.querySelector('salla-apps-icons');
-    if (appsIcons && appsIcons.parentNode) {
-      const el = document.createElement('div');
-      el.className = 'flex flex-col justify-start items-end text-right custom-sbc-column';
-
-      el.innerHTML = `
-
-
-        <div class="sbc-title">موثق لدى</div>
-        <div class="custom-sbc-logo">
-          <a href="https://eauthenticate.saudibusiness.gov.sa/certificate-details/0000168389" target="_blank" rel="noopener">
-            <img src="https://cdn.saudibusiness.gov.sa/v2/dist//images/headerIcons/Logo.svg" alt="SBC Logo">
-          </a>
-        </div>
-
-        <div class="custom-verified-by">
-          <div class="sbc-title">تم فحص المنتج في</div>
-          <a href="https://jejetallow.com/شهادة-تقرير-الفحص/page-1127791441" target="_blank" rel="noopener">
-            <img src="https://www.hasanah.com.sa/wp-content/uploads/2022/01/hasanah-logo.png" alt="Hasanah Logo">
-          </a>
-        </div>
-      `;
-
-      appsIcons.parentNode.insertBefore(el, appsIcons);
-    }
+ 
+  const seed = [
+    {name:"ريم", msg:"تجربة ممتازة وشحن سريع."},
+    {name:"ناصر", msg:"الجودة عالية والسعر مناسب."},
+    {name:"أم محمد", msg:"الرائحة طبيعية والترطيب عالي."},
+    {name:"هند", msg:"خدمة العملاء تجاوبت بسرعة."},
+  ];
+  const stream = document.getElementById('jeje-stream');
+  function render(list){
+    stream.innerHTML = '';
+    const doubled = list.concat(list); 
+    doubled.forEach(it=>{
+      const li = document.createElement('li');
+      li.className = 'item';
+      li.innerHTML = `<strong>${escape(it.name)}</strong><div>${escape(it.msg)}</div>`;
+      stream.appendChild(li);
+    });
   }
-});
+  render(seed);
+
+ 
+  const fab = document.getElementById('jeje-fab');
+  const menu = document.getElementById('jeje-menu');
+  let menuOpen = false;
+  fab.addEventListener('click', ()=>{
+    menuOpen = !menuOpen;
+    menu.style.display = menuOpen ? 'block' : 'none';
+  });
+  document.addEventListener('click', (e)=>{
+    if (!menu.contains(e.target) && !fab.contains(e.target)) {
+      menuOpen = false; menu.style.display = 'none';
+    }
+  });
+
+
+  menu.addEventListener('click', (e)=>{
+    if(e.target.dataset.act === 'form'){
+      toggleForm(true);
+    }else if(e.target.dataset.act === 'whatsapp'){
+      const t = encodeURIComponent("أحب أشارك رأيي بمنتجات Jeje:");
+      window.open(`https://wa.me/?text=${t}`, '_blank');
+    }else if(e.target.dataset.act === 'email'){
+      window.location.href = "mailto:owner@example.com?subject=%D9%85%D8%B4%D8%A7%D8%B1%D9%83%D8%A9%20%D8%B1%D8%A3%D9%8A&body=%D9%86%D8%B5%20%D8%A7%D9%84%D8%B1%D8%A3%D9%8A%3A%0A";
+    }
+  });
+
+ 
+  const formBox = document.getElementById('jeje-form');
+  const ok = document.getElementById('jeje-ok');
+  const err = document.getElementById('jeje-err');
+  document.getElementById('f-send').addEventListener('click', async ()=>{
+    ok.style.display='none'; err.style.display='none';
+    const name = String(document.getElementById('f-name').value||'').slice(0,100).trim();
+    const msg  = String(document.getElementById('f-msg').value||'').slice(0,2000).trim();
+    if(!name || !msg) return; // بدون حماية سبام
+
+    try{
+      const res = await fetch(ENDPOINT, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name, message:msg, url:location.href})
+      });
+      if(res.ok){
+        ok.style.display='block';
+        
+        seed.unshift({name, msg});
+        render(seed);
+        document.getElementById('f-name').value='';
+        document.getElementById('f-msg').value='';
+      }else{
+        err.style.display='block';
+      }
+    }catch{
+      err.style.display='block';
+    }
+  });
+
+  function toggleForm(show){
+    formBox.style.display = show ? 'grid' : 'none';
+    menu.style.display = 'none'; menuOpen = false;
+  }
+  function escape(s){return String(s).replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;'}[m]));}
+})();

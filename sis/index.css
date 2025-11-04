@@ -1,31 +1,89 @@
-.salla-jeje { display:block; }
-.custom-sbc-column{
-  align-items:flex-end !important;
-  text-align:right !important;
-  direction:rtl;
+
+
+#jeje-testi{
+  position:relative;
+  max-width:1200px;
+  margin:24px auto;
+  border-radius:28px;
+  background:#e9e3d7 url("https://cdn.salla.sa/form-builder/QPcH7cmZLIpvLMfarLiKIVlO8cV4B6NLKbLJJW73.png") center/cover no-repeat;
+  padding:18px 24px 24px;
+  box-shadow:0 6px 20px rgba(0,0,0,.08);
 }
-.custom-sbc-column .sbc-title{
-  width:100%;
-  font-weight:600;
-  font-size:1rem;
-  margin:0;
-  text-align:right !important;
+#jeje-testi .cap{
+  position:absolute; top:16px; right:24px;
+  font-weight:800; font-size:28px; color:#19191a;
 }
-body.index{
-background-color:#ebe6dc !important;
+#jeje-testi .dash{
+  position:absolute; inset:10px; border-radius:24px;
+  border:4px dashed #2e2e2e; pointer-events:none;
 }
-.custom-sbc-column > * + *{ margin-top:20px; }
-.custom-sfda .sbc-title{ margin-bottom:20px; }
-.custom-verified-by .sbc-title{ margin-bottom:20px; }
-.custom-sfda, .custom-sbc-logo, .custom-verified-by{ margin-left:auto !important; }
-.custom-sfda img, .custom-sbc-logo img, .custom-verified-by img{
-  width:280px !important;
-  max-width:100% !important;
-  height:auto !important;
-  display:block !important;
+
+/* قائمة العناصر المتحركة لأعلى */
+#jeje-testi .viewport{
+  position:relative; height:170px; overflow:hidden; margin-top:10px;
 }
-@media (min-width:1024px){
-  .custom-sfda img, .custom-sbc-logo img, .custom-verified-by img{
-    width:260px !important;
-  }
+#jeje-testi ul.stream{
+  list-style:none; padding:0; margin:0;
+  display:flex; flex-direction:column; gap:10px;
+  animation:jeje-marquee 22s linear infinite;
+}
+#jeje-testi li.item{
+  background:#fff; border:1px solid #ddd; border-radius:14px;
+  padding:12px 14px; color:var(--color-text);
+  box-shadow:0 2px 8px rgba(0,0,0,.04);
+}
+#jeje-tosti li.item small{color:var(--color-muted)}
+@keyframes jeje-marquee{
+  0%{transform:translateY(0)}
+  100%{transform:translateY(-50%)} /* لا نهائي مع نسخة مكررة */
+}
+
+/* زر + العائم */
+#jeje-fab{
+  position:absolute; left:18px; bottom:18px;
+  width:64px; height:64px; border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, #fff 55%, #ddd 56% 60%, #fff 61% 65%, #ddd 66% 70%, #fff 71%);
+  display:grid; place-items:center; cursor:pointer; z-index:5;
+  box-shadow:0 6px 12px rgba(0,0,0,.15);
+}
+#jeje-fab .plus{
+  width:34px; height:34px; border-radius:50%;
+  background:var(--color-primary); color:#fff; font-weight:900; display:grid; place-items:center;
+}
+
+
+#jeje-menu{
+  position:absolute; left:18px; bottom:94px; z-index:6;
+  background:#fff; border:1px solid #ddd; border-radius:14px; padding:10px;
+  box-shadow:0 10px 24px rgba(0,0,0,.15); width:220px; display:none;
+}
+#jeje-menu button{
+  width:100%; border:0; background:#fff; text-align:right;
+  padding:10px 12px; border-radius:10px; cursor:pointer; color:#19191a;
+}
+#jeje-menu button:hover{background:#f5f5f5}
+
+
+#jeje-form{
+  display:none; gap:8px; margin-top:12px;
+}
+#jeje-form input, #jeje-form textarea{
+  width:100%; border:1px solid #ddd; border-radius:10px; padding:10px; background:#fff; color:#19191a;
+}
+#jeje-form .send{
+  border:0; border-radius:10px; padding:10px 14px; background:var(--color-primary); color:#fff; cursor:pointer;
+}
+
+/* أيقونة يمين */
+#jeje-icon{
+  position:absolute; right:24px; bottom:24px;
+  width:84px; height:84px; border-radius:50%; background:#9c8357;
+  display:grid; place-items:center; color:#fff; font-size:22px; opacity:.95;
+}
+
+/* استجابة */
+@media (max-width:768px){
+  #jeje-testi{padding:14px 16px 20px}
+  #jeje-testi .cap{font-size:20px; right:18px}
+  #jeje-icon{width:64px; height:64px; right:18px; bottom:18px}
 }
