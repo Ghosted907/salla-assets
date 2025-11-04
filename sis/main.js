@@ -1,4 +1,4 @@
-// ===== Jeje Testimonials (pure JS, no <script>) =====
+/*
 const ENDPOINT = "https://your-endpoint.example/submit";  
 const TARGET_SELECTOR = "main, .page-content, body";       
 
