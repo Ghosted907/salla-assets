@@ -27,7 +27,7 @@
   <div id="jeje-icon">☎️</div>
 </div>
 
-<script>
+
 (function(){
   
   const ENDPOINT = "https://your-endpoint.example/submit";
