@@ -203,8 +203,8 @@
     .jf-ticker:hover .jf-track{ animation-play-state:paused; }
     @keyframes jf-marquee-up{ 0%{ transform:translateY(0);} 100%{ transform:translateY(-50%);} }
     @media (prefers-reduced-motion: reduce){ .jf-track{ animation:none !important; } }
-    /* Mobile: ticker sits below the poster to fit 3375x1531 (~0.454h) */
-    @media (max-width:640px){ .jf-ticker{ position:static; left:auto; right:auto; bottom:auto; height:clamp(72px, 24vw, 140px); margin-top:10px; border-radius:12px; } }
+    /* Keep ticker overlaying the poster on all sizes (clipped by .jf-hero) */
+    @media (max-width:640px){ .jf-ticker{ left:6%; right:6%; bottom:5%; height:clamp(80px, 24vw, 160px); } }
   `;
   const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
 
@@ -356,7 +356,9 @@
 
   function attachTicker(){
     const root = document.querySelector('.jf-container');
-    if (!root || root.querySelector('.jf-ticker')) return;
+    if (!root) return;
+    const hero = root.querySelector('.jf-hero') || root;
+    if (hero.querySelector('.jf-ticker')) return; // idempotent per-hero
     const wrap = document.createElement('div');
     wrap.className = 'jf-ticker';
     wrap.dir = 'rtl';
@@ -366,7 +368,7 @@
     inner.className = 'jf-track';
     inner.setAttribute('aria-hidden','true');
     wrap.appendChild(inner);
-    root.appendChild(wrap);
+    hero.appendChild(wrap);
     initTicker();
   }
 
@@ -395,9 +397,9 @@
     track.innerHTML = REVIEWS_TEXT.map(makeItem).join('') + REVIEWS_TEXT.map(makeItem).join('');
 
     requestAnimationFrame(() => {
-      const SPEED_PX_PER_SEC = (window.innerWidth <= 480) ? 30 : 40; // أبطأ قليلاً على الجوال
+      const SPEED_PX_PER_SEC = (window.innerWidth <= 480) ? 60 : 90; // أسرع على الجوال وسطح المكتب
       const halfHeight = track.scrollHeight / 2; // لأننا ضاعفنا المحتوى
-      const duration = Math.max(halfHeight / SPEED_PX_PER_SEC, 8); // حد أدنى 8 ثوانٍ
+      const duration = Math.max(halfHeight / SPEED_PX_PER_SEC, 5); // حد أدنى 5 ثوانٍ
       track.style.animationDuration = duration + 's';
       track.dataset.ready = '1';
     });
