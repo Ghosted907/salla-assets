@@ -404,13 +404,13 @@
     const makeItem = t => `<div class="jf-item"> ${t}</div>`;
     track.innerHTML = REVIEWS_TEXT.map(makeItem).join('') + REVIEWS_TEXT.map(makeItem).join('');
 
-    requestAnimationFrame(() => {
-      const SPEED_PX_PER_SEC = (window.innerWidth <= 80) ? 10 : 16; // أسرع بكثير على الجوال وسطح المكتب
+    /* requestAnimationFrame(() => {
+      const SPEED_PX_PER_SEC = (window.innerWidth <= 800) ? 100 : 160; // أسرع بكثير على الجوال وسطح المكتب
       const halfHeight = track.scrollHeight / 2; // لأننا ضاعفنا المحتوى
       const duration = Math.max(halfHeight / SPEED_PX_PER_SEC, 3); // حد أدنى 3 ثوانٍ
       track.style.animationDuration = duration + 's';
       track.dataset.ready = '1';
-    });
+    }); */
 
     // Recalculate on resize with debounce
     if (!jfTickerResizeBound){
@@ -434,9 +434,9 @@
       track.style.setProperty('--jf-distance', `-${distance}px`);
       const isMobile = window.matchMedia('(max-width: 640px)').matches;
       const reduce   = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let speed = isMobile ? 240 : 360; // px/sec
+      let speed = isMobile ? 160 : 220; // px/sec (unified)
       if (reduce) speed *= 0.6;
-      const minDur = isMobile ? 1.0 : 1.1;
+      const minDur = 3.0; // clear minimum
       const duration = Math.max(distance / speed, minDur);
       track.style.setProperty('--jf-duration', `${duration}s`);
       track.style.animation = `jf-marquee-up linear ${duration}s infinite`;
