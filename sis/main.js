@@ -405,7 +405,7 @@
     track.innerHTML = REVIEWS_TEXT.map(makeItem).join('') + REVIEWS_TEXT.map(makeItem).join('');
 
     requestAnimationFrame(() => {
-      const SPEED_PX_PER_SEC = (window.innerWidth <= 800) ? 100 : 160; // أسرع بكثير على الجوال وسطح المكتب
+      const SPEED_PX_PER_SEC = (window.innerWidth <= 80) ? 10 : 16; // أسرع بكثير على الجوال وسطح المكتب
       const halfHeight = track.scrollHeight / 2; // لأننا ضاعفنا المحتوى
       const duration = Math.max(halfHeight / SPEED_PX_PER_SEC, 3); // حد أدنى 3 ثوانٍ
       track.style.animationDuration = duration + 's';
