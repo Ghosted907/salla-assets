@@ -407,7 +407,9 @@
           const t = document.getElementById('jf-track');
           if (!t) return;
           t.dataset.ready = '0';
-          t.style.animation = 'none';
+          // stop current animation without forcing inline play-state
+          t.style.animationName = 'none';
+          t.style.removeProperty('animation-play-state');
           void t.offsetHeight; // force reflow
           initTicker();
         }, 250);
@@ -426,7 +428,12 @@
       const minDur = 5.0; // slightly slower baseline
       const duration = Math.max(distance / speed, minDur);
       track.style.setProperty('--jf-duration', `${duration}s`);
-      track.style.animation = `jf-marquee-up linear ${duration}s infinite`;
+      // set longhand props to avoid overriding :hover pause rule
+      track.style.animationName = 'jf-marquee-up';
+      track.style.animationDuration = `${duration}s`;
+      track.style.animationTimingFunction = 'linear';
+      track.style.animationIterationCount = 'infinite';
+      track.style.removeProperty('animation-play-state');
       track.dataset.ready = '1';
     });
   }
