@@ -196,7 +196,7 @@
     .gal-dot[aria-current="true"]{ background:#8d6a39; }
 
     /* ===== شريط الآراء المتحرك ===== */
-    .jf-ticker{ position:absolute; left:1%; right:20%; bottom:85px; height:365px; background:rgba(239,234,226,.80); border-radius:16px; padding:10px 14px; overflow:hidden; z-index:2; display:flex; align-items:stretch; }
+    .jf-ticker{ position:absolute; left:7px; right:20%; bottom:85px; height:365px; background:rgba(239,234,226,.80); border-radius:16px; padding:10px 14px; overflow:hidden; z-index:2; display:flex; align-items:stretch; }
     .jf-track{ display:flex; flex-direction:column; gap:10px; animation-name:jf-marquee-up; animation-timing-function:linear; animation-iteration-count:infinite; will-change:transform; }
     .jf-item{ background:#fff; border:1px solid #ddd; border-radius:12px; padding:10px 12px; color:#19191a; box-shadow:0 2px 6px rgba(0,0,0,.05); }
     .jf-ticker:hover .jf-track{ animation-play-state:paused; }
