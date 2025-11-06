@@ -1,7 +1,7 @@
 
 (() => {
  
-  const IMAGE_URL = 'https://ghosted907.github.io/salla-assets/sis/1.png';
+  const IMAGE_URL = 'https://ghosted907.github.io/salla-assets/sis/4.png';
   const WA_PHONE  = '966557042544'; 
   const WA_TEXT   = encodeURIComponent('أرغب بإضافة رأيي حول المنتج');
   const GALLERY = [
@@ -9,6 +9,12 @@
     'https://ghosted907.github.io/salla-assets/sis/review-1.jpg',
     'https://ghosted907.github.io/salla-assets/sis/review-2.jpg',
     'https://ghosted907.github.io/salla-assets/sis/review-3.jpg',
+  ];
+  const REVIEWS_TEXT = [
+    'خدمة رائعة وسرعة في الشحن. شكرا لكم.',
+    'جودة المنتج ممتازة رائحة لطيفة وثبات رهيب.',
+    'طاقم الدعم متعاون جدا وحل مشكلتي بسرعة.',
+    'طلبت مرة ثانية لأن التجربة الأولى كانت ممتازة.',
   ];
 
   // CSS
@@ -19,8 +25,8 @@
          background:transparent!important;border:0;box-shadow:none!important;border-radius:9999px;
          display:block;cursor:pointer;z-index:3;appearance:none;-webkit-appearance:none;padding:0;margin:0}
 
-    .pin-add{top:70.5%;left:4.8%}
-    .pin-gallery{top:25.5%;left:4.8%}
+    .pin-add{top:92.5%;left:5.8%}
+    .pin-gallery{top:8.5%;left:5.8%}
 
     /* Modal */
     dialog.gallery-modal{ border:0; padding:0; background:transparent; }
@@ -71,6 +77,14 @@
     .gal-dots{ display:flex; gap:6px; justify-content:center; align-items:center; margin-top:6px; flex-wrap:wrap; }
     .gal-dot{ width:10px; height:10px; border-radius:9999px; background:#bfb7ae; border:0; }
     .gal-dot[aria-current="true"]{ background:#8d6a39; }
+
+    /* ===== شريط الآراء المتحرك ===== */
+    .jf-ticker{ position:absolute; left:8%; right:8%; bottom:6%; height:140px; background:rgba(239,234,226,.80); border-radius:16px; padding:10px 14px; overflow:hidden; z-index:2; display:flex; align-items:stretch; }
+    .jf-track{ display:flex; flex-direction:column; gap:10px; animation-name:jf-marquee-up; animation-timing-function:linear; animation-iteration-count:infinite; will-change:transform; }
+    .jf-item{ background:#fff; border:1px solid #ddd; border-radius:12px; padding:10px 12px; color:#19191a; box-shadow:0 2px 6px rgba(0,0,0,.05); }
+    .jf-ticker:hover .jf-track{ animation-play-state:paused; }
+    @keyframes jf-marquee-up{ 0%{ transform:translateY(0);} 100%{ transform:translateY(-50%);} }
+    @media (prefers-reduced-motion: reduce){ .jf-track{ animation:none !important; } }
   `;
   const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
 
@@ -100,6 +114,7 @@
     if (targetSection){
       if (document.querySelector('.jf-container')) return true;
       targetSection.insertAdjacentElement('afterend', buildBox());
+      attachTicker();
       ensureGalleryModal();
       return true;
     }
@@ -113,6 +128,7 @@
     if (catBanner){
       if (document.querySelector('.jf-container')) return true;
       catBanner.insertAdjacentElement('afterend', buildBox());
+      attachTicker();
       ensureGalleryModal();
       return true;
     }
@@ -126,6 +142,7 @@
     if (prodBanner){
       if (document.querySelector('.jf-container')) return true;
       prodBanner.insertAdjacentElement('afterend', buildBox());
+      attachTicker();
       ensureGalleryModal();
       return true;
     }
@@ -135,6 +152,7 @@
     if (!footer) return false;
     if (document.querySelector('.jf-container')) return true;
     footer.parentNode.insertBefore(buildBox(), footer);
+    attachTicker();
     ensureGalleryModal();
     return true;
   }
@@ -210,6 +228,40 @@
     if(!prev || !next) return;
     prev.addEventListener('click', () => { galIndex = (galIndex - 1 + GALLERY.length) % GALLERY.length; showSlide(); });
     next.addEventListener('click', () => { galIndex = (galIndex + 1) % GALLERY.length; showSlide(); });
+  }
+
+  function attachTicker(){
+    const root = document.querySelector('.jf-container');
+    if (!root || root.querySelector('.jf-ticker')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'jf-ticker';
+    wrap.dir = 'rtl';
+    wrap.setAttribute('aria-label','آراء العملاء');
+    const inner = document.createElement('div');
+    inner.id = 'jf-track';
+    inner.className = 'jf-track';
+    inner.setAttribute('aria-hidden','true');
+    wrap.appendChild(inner);
+    root.appendChild(wrap);
+    initTicker();
+  }
+
+  // ====== تهيئة شريط الآراء المتحرك ======
+  function initTicker(){
+    const track = document.getElementById('jf-track');
+    if (!track) return;
+    if (track.dataset.ready === '1') return; // idempotent
+
+    const makeItem = t => `<div class="jf-item"> ${t}</div>`;
+    track.innerHTML = REVIEWS_TEXT.map(makeItem).join('') + REVIEWS_TEXT.map(makeItem).join('');
+
+    requestAnimationFrame(() => {
+      const SPEED_PX_PER_SEC = 40; // يمكن تعديل السرعة
+      const halfHeight = track.scrollHeight / 2; // لأننا ضاعفنا المحتوى
+      const duration = Math.max(halfHeight / SPEED_PX_PER_SEC, 8); // حد أدنى 8 ثوانٍ
+      track.style.animationDuration = duration + 's';
+      track.dataset.ready = '1';
+    });
   }
 
   
