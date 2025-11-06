@@ -196,12 +196,14 @@
     .gal-dot[aria-current="true"]{ background:#8d6a39; }
 
     /* ===== شريط الآراء المتحرك ===== */
-    .jf-ticker{ position:absolute; left:7px; right:20%; bottom:85px; height:365px; background:rgba(239,234,226,.80); border-radius:16px; padding:10px 14px; overflow:hidden; z-index:2; display:flex; align-items:stretch; }
+    .jf-ticker{ position:absolute; left:8%; right:8%; bottom:6%; height:140px; background:rgba(239,234,226,.80); border-radius:16px; padding:10px 14px; overflow:hidden; z-index:2; display:flex; align-items:stretch; }
     .jf-track{ display:flex; flex-direction:column; gap:10px; animation-name:jf-marquee-up; animation-timing-function:linear; animation-iteration-count:infinite; will-change:transform; }
     .jf-item{ background:#fff; border:1px solid #ddd; border-radius:12px; padding:10px 12px; color:#19191a; box-shadow:0 2px 6px rgba(0,0,0,.05); }
     .jf-ticker:hover .jf-track{ animation-play-state:paused; }
     @keyframes jf-marquee-up{ 0%{ transform:translateY(0);} 100%{ transform:translateY(-50%);} }
     @media (prefers-reduced-motion: reduce){ .jf-track{ animation:none !important; } }
+    /* Mobile: ticker sits below the poster to fit 3375x1531 (~0.454h) */
+    @media (max-width:640px){ .jf-ticker{ position:static; left:auto; right:auto; bottom:auto; height:clamp(72px, 24vw, 140px); margin-top:10px; border-radius:12px; } }
   `;
   const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
 
@@ -373,7 +375,7 @@
     track.innerHTML = REVIEWS_TEXT.map(makeItem).join('') + REVIEWS_TEXT.map(makeItem).join('');
 
     requestAnimationFrame(() => {
-      const SPEED_PX_PER_SEC = 40; // يمكن تعديل السرعة
+      const SPEED_PX_PER_SEC = (window.innerWidth <= 480) ? 30 : 40; // أبطأ قليلاً على الجوال
       const halfHeight = track.scrollHeight / 2; // لأننا ضاعفنا المحتوى
       const duration = Math.max(halfHeight / SPEED_PX_PER_SEC, 8); // حد أدنى 8 ثوانٍ
       track.style.animationDuration = duration + 's';
