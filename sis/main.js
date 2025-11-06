@@ -1,7 +1,7 @@
 
 (() => {
  
-  const IMAGE_URL = 'https://ghosted907.github.io/salla-assets/sis/1.png';
+  const IMAGE_URL = 'https://ghosted907.github.io/salla-assets/sis/4.png';
   const WA_PHONE  = '966557042544'; 
   const WA_TEXT   = encodeURIComponent('أرغب بإضافة رأيي حول المنتج');
   const GALLERY = [
@@ -89,20 +89,48 @@
 
 
   function mount(){
-    // Prefer mounting after the fixed banner with the given target URL
-    const banner = Array.from(document.querySelectorAll('a.banner.banner--fixed, a.banner.banner--fixed.overflow-hidden'))
-      .find(a => {
+    // Prefer mounting AFTER the fixed-banner section that contains the target categories link
+    const targetSection = Array.from(document.querySelectorAll('section.s-block.s-block--fixed-banner.wide-placeholder'))
+      .find(sec => {
+        const a = sec.querySelector('a.banner.banner--fixed, a.banner.banner--fixed.overflow-hidden');
+        if(!a) return false;
         const href = a.getAttribute('href') || a.href || '';
-        return href.includes('jejetallow.com/redirect/products/1879463664');
+        return href.includes('jejetallow.com/redirect/categories/2058495926');
       });
-    if (banner){
+    if (targetSection){
       if (document.querySelector('.jf-container')) return true;
-      banner.insertAdjacentElement('afterend', buildBox());
+      targetSection.insertAdjacentElement('afterend', buildBox());
       ensureGalleryModal();
       return true;
     }
 
-    // Fallback: before footer if banner is not present
+    // Fallback 1: after the categories banner anywhere
+    const catBanner = Array.from(document.querySelectorAll('a.banner.banner--fixed, a.banner.banner--fixed.overflow-hidden'))
+      .find(a => {
+        const href = a.getAttribute('href') || a.href || '';
+        return href.includes('jejetallow.com/redirect/categories/2058495926');
+      });
+    if (catBanner){
+      if (document.querySelector('.jf-container')) return true;
+      catBanner.insertAdjacentElement('afterend', buildBox());
+      ensureGalleryModal();
+      return true;
+    }
+
+    // Fallback 2: after the previous product banner if still present
+    const prodBanner = Array.from(document.querySelectorAll('a.banner.banner--fixed, a.banner.banner--fixed.overflow-hidden'))
+      .find(a => {
+        const href = a.getAttribute('href') || a.href || '';
+        return href.includes('jejetallow.com/redirect/products/1879463664');
+      });
+    if (prodBanner){
+      if (document.querySelector('.jf-container')) return true;
+      prodBanner.insertAdjacentElement('afterend', buildBox());
+      ensureGalleryModal();
+      return true;
+    }
+
+    // Fallback 3: before footer
     const footer = document.querySelector('footer.store-footer');
     if (!footer) return false;
     if (document.querySelector('.jf-container')) return true;
