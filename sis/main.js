@@ -137,7 +137,8 @@
   // CSS
   const css = `
     .jf-container{position:relative;display:block;width:100%;max-width:1200px;margin:12px auto;}
-    .jf-img{display:block;width:100%;height:auto;border-radius:40px}
+    .jf-hero{position:relative;display:block;width:100%;border-radius:40px;overflow:hidden}
+    .jf-img{display:block;width:100%;height:auto}
     .pin{position:absolute;transform:translate(-50%,-50%);width:75px;height:50px;
          background:transparent!important;border:0;box-shadow:none!important;border-radius:9999px;
          display:block;cursor:pointer;z-index:3;appearance:none;-webkit-appearance:none;padding:0;margin:0}
@@ -233,6 +234,7 @@
     if (targetSection){
       if (document.querySelector('.jf-container')) return true;
       targetSection.insertAdjacentElement('afterend', buildBox());
+      ensureHeroWrap();
       attachTicker();
       ensureGalleryModal();
       return true;
@@ -247,6 +249,7 @@
     if (catBanner){
       if (document.querySelector('.jf-container')) return true;
       catBanner.insertAdjacentElement('afterend', buildBox());
+      ensureHeroWrap();
       attachTicker();
       ensureGalleryModal();
       return true;
@@ -261,6 +264,7 @@
     if (prodBanner){
       if (document.querySelector('.jf-container')) return true;
       prodBanner.insertAdjacentElement('afterend', buildBox());
+      ensureHeroWrap();
       attachTicker();
       ensureGalleryModal();
       return true;
@@ -271,6 +275,7 @@
     if (!footer) return false;
     if (document.querySelector('.jf-container')) return true;
     footer.parentNode.insertBefore(buildBox(), footer);
+    ensureHeroWrap();
     attachTicker();
     ensureGalleryModal();
     return true;
@@ -363,6 +368,21 @@
     wrap.appendChild(inner);
     root.appendChild(wrap);
     initTicker();
+  }
+
+  function ensureHeroWrap(){
+    const root = document.querySelector('.jf-container');
+    if(!root || root.querySelector('.jf-hero')) return;
+    const imgEl = root.querySelector('.jf-img');
+    const addPin = root.querySelector('.pin-add');
+    const galPin = root.querySelector('.pin-gallery');
+    if(!imgEl || !addPin || !galPin) return;
+    const hero = document.createElement('div');
+    hero.className = 'jf-hero';
+    root.insertBefore(hero, imgEl);
+    hero.appendChild(imgEl);
+    hero.appendChild(addPin);
+    hero.appendChild(galPin);
   }
 
   // ====== تهيئة شريط الآراء المتحرك ======
