@@ -1,174 +1,158 @@
 
-const ENDPOINT = "https://elaris.sa/submit"; 
-const BG_URL = "https://cdn.salla.sa/form-builder/QPcH7cmZLIpvLMfarLiKIVlO8cV4B6NLKbLJJW73.png";
-
-(function(){
-  if (document.getElementById("jeje-testi")) return;
-
-
-  function findByBg(url){
-    const all = document.querySelectorAll("section, div, header, main, .container, .section, .page, .content, .hero, .banner, .block");
-    for (const el of all){
-      const cs = getComputedStyle(el);
-      if (cs.backgroundImage && cs.backgroundImage.includes(url)) return el;
-    }
- 
-    const img = document.querySelector(`img[src*="${url}"]`);
-    if (img) return img.closest("section, div") || img.parentElement;
-    return null;
-  }
-  const anchor = findByBg(BG_URL) || document.querySelector("main, .page-content, .container") || document.body;
-
-  
-  if (!document.getElementById("jeje-styles")){
-    const css = `
-#jeje-testi{position:relative;max-width:1200px;margin:24px auto;border-radius:28px;
-  background:transparent;padding:18px 24px 24px}
-#jeje-testi .dash{position:absolute;inset:10px;border-radius:24px;border:4px dashed #2e2e2e;pointer-events:none}
-#jeje-testi .cap{position:absolute;top:16px;right:24px;font-weight:800;font-size:28px;color:#19191a}
-#jeje-testi .viewport{position:relative;height:180px;overflow:hidden;margin-top:10px}
-#jeje-testi ul.stream{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;
-  animation:jeje-marquee 22s linear infinite}
-#jeje-testi:hover ul.stream{animation-play-state:paused}
-#jeje-testi li.item{background:#fff;border:1px solid #ddd;border-radius:14px;padding:12px 14px;color:#19191a;
-  box-shadow:0 2px 8px rgba(0,0,0,.04)}
-#jeje-fab{position:absolute;left:18px;bottom:18px;width:64px;height:64px;border-radius:50%;
-  background:radial-gradient(circle at 50% 50%, #fff 55%, #ddd 56% 60%, #fff 61% 65%, #ddd 66% 70%, #fff 71%);
-  display:grid;place-items:center;cursor:pointer;z-index:5;box-shadow:0 6px 12px rgba(0,0,0,.15)}
-#jeje-fab .plus{width:34px;height:34px;border-radius:50%;background:#b99c6d;color:#fff;font-weight:900;display:grid;place-items:center}
-#jeje-menu{position:absolute;left:18px;bottom:94px;z-index:6;background:#fff;border:1px solid #ddd;border-radius:22px;
-  padding:18px 16px;box-shadow:0 10px 24px rgba(0,0,0,.15);width:min(560px,92vw);display:none}
-#jeje-menu h3{margin:0 0 10px 0;font-size:22px;color:#19191a}
-#jeje-form{display:grid;gap:10px}
-#jeje-form .row{display:grid;gap:8px}
-#jeje-form input[type="text"],#jeje-form input[type="email"],#jeje-form textarea{
-  width:100%;border:1px solid #ddd;border-radius:12px;padding:12px;background:#e9e3d7;color:#19191a}
-#jeje-form .choice{display:grid;gap:8px}
-#jeje-form .choice label{display:flex;align-items:center;gap:10px;background:#e0dbd1;border-radius:12px;padding:12px}
-#jeje-form .send{border:0;border-radius:14px;padding:12px 16px;background:#b99c6d;color:#fff;font-size:18px;cursor:pointer}
-#jeje-ok{display:none;margin-top:6px;color:#0a7}
-#jeje-err{display:none;margin-top:6px;color:#c00}
-#jeje-icon{position:absolute;right:24px;bottom:24px;width:84px;height:84px;border-radius:50%;background:#9c8357;
-  display:grid;place-items:center;color:#fff;font-size:22px;opacity:.95}
-@keyframes jeje-marquee{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
-@media (max-width:768px){#jeje-testi{padding:14px 16px 20px}#jeje-testi .cap{font-size:20px;right:18px}
-  #jeje-icon{width:64px;height:64px;right:18px;bottom:18px}}
-`;
-    const st = document.createElement("style");
-    st.id = "jeje-styles"; st.textContent = css;
-    document.head.appendChild(st);
-  }
-
-  
-  const box = document.createElement("div");
-  box.id = "jeje-testi"; box.dir = "rtl"; box.setAttribute("aria-label","تجارب العملاء");
-  box.innerHTML = `
-    <div class="dash"></div>
-    <div class="cap">شاركني رأيك</div>
-    <div class="viewport"><ul class="stream" id="jeje-stream"></ul></div>
-    <div id="jeje-fab" title="شارك رأيك"><div class="plus">+</div></div>
-    <div id="jeje-menu" role="dialog" aria-modal="true">
-      <h3>شاركنا رأيك</h3>
-      <form id="jeje-form" onsubmit="return false">
-        <div class="row">
-          <label>اسمك*</label>
-          <input type="text" id="f-name" placeholder="اسمك">
-          <label style="display:flex;align-items:center;gap:8px">
-            <input type="checkbox" id="f-hide"> إخفاء الاسم
-          </label>
-        </div>
-        <div class="row">
-          <label>أدخل بريدك الإلكتروني*</label>
-          <input type="email" id="f-email" placeholder="name@example.com">
-        </div>
-        <div class="row">
-          <label>اختر المنتج</label>
-          <div class="choice">
-            <label><input type="checkbox" value="الأصلي" class="f-prod"> الأصلي</label>
-            <label><input type="checkbox" value="ألما" class="f-prod"> ألما</label>
-            <label><input type="checkbox" value="القهوة" class="f-prod"> القهوة</label>
-            <label><input type="checkbox" value="الفانيلا" class="f-prod"> الفانيلا</label>
-          </div>
-        </div>
-        <div class="row">
-          <label>تحدّثي عن تجربتك</label>
-          <textarea id="f-msg" rows="4" placeholder="اكتبي رأيك هنا"></textarea>
-        </div>
-        <button class="send" id="f-send" type="button">إرسال</button>
-        <div id="jeje-ok">تم إرسال مشاركتك.</div>
-        <div id="jeje-err">تعذر الإرسال.</div>
-        <div style="font-size:12px;color:#6e7881">لن يتم مشاركة اسمك. تجنب إرسال كلمات المرور مطلقاً.</div>
-      </form>
-    </div>
-    <div id="jeje-icon">☎️</div>
-  `;
-  anchor.insertAdjacentElement("afterend", box);
-
- 
-  const seed = [
-    {name:"ريم", msg:"تجربة ممتازة وشحن سريع."},
-    {name:"ناصر", msg:"الجودة عالية والسعر مناسب."},
-    {name:"أم محمد", msg:"الرائحة طبيعية والترطيب عالي."},
-    {name:"هند", msg:"خدمة العملاء تجاوبت بسرعة."},
+(() => {
+  // الإعدادات
+  const TARGET = 'section.s-block.s-block--fixed-banner.wide-placeholder';
+  const IMAGE_URL = 'https://ghosted907.github.io/salla-assets/sis/1.png';
+  const WA_PHONE  = '9665XXXXXXXXX'; // بدون +
+  const WA_TEXT   = encodeURIComponent('أرغب بإضافة رأيي حول المنتج');
+  const GALLERY = [
+    'https://ghosted907.github.io/salla-assets/sis/review-0.jpg',
+    'https://ghosted907.github.io/salla-assets/sis/review-1.jpg',
+    'https://ghosted907.github.io/salla-assets/sis/review-2.jpg',
+    'https://ghosted907.github.io/salla-assets/sis/review-3.jpg',
   ];
-  const stream = document.getElementById("jeje-stream");
-  function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-  function render(list){
-    stream.innerHTML = "";
-    const doubled = list.concat(list);
-    doubled.forEach(it=>{
-      const li = document.createElement("li");
-      li.className = "item";
-      li.innerHTML = `<strong>${esc(it.name)}</strong><div>${esc(it.msg)}</div>`;
-      stream.appendChild(li);
+
+  // CSS
+  const style = document.createElement('style');
+  style.textContent = `
+    .jf-container{position:relative;display:inline-block;max-width:100%;}
+    .jf-img{display:block;width:100%;height:auto;border-radius:40px;}
+    .pin{
+      position:absolute;transform:translate(-50%,-50%);
+      width:75px;height:50px;background:transparent!important;border:0;box-shadow:none!important;
+      border-radius:9999px;display:block;cursor:pointer;z-index:3;appearance:none;-webkit-appearance:none;
+      padding:0;margin:0;
+    }
+    .pin-add{top:70.5%;left:4.8%;}
+    .pin-gallery{top:25.5%;left:4.8%;}
+    dialog.gallery-modal{border:0;padding:0;background:transparent;}
+    dialog.gallery-modal::backdrop{background:rgba(0,0,0,.5);}
+    .gal-card{width:min(96vw,860px);background:#efeae2;border-radius:20px;padding:12px;box-shadow:0 12px 40px rgba(0,0,0,.25);}
+    .gal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+    .gal-close{background:none;border:0;font-size:20px;cursor:pointer;}
+    .gal-viewport{position:relative;overflow:hidden;border-radius:14px;}
+    .gal-viewport img{display:block;width:100%;height:auto;}
+    .gal-nav{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;}
+    .gal-btn{background:#8d6a39;color:#111;border:0;border-radius:12px;padding:10px 14px;cursor:pointer;}
+    .gal-dots{display:flex;gap:6px;justify-content:center;align-items:center;margin-top:6px;flex-wrap:wrap;}
+    .gal-dot{width:10px;height:10px;border-radius:9999px;background:#bfb7ae;border:0;}
+    .gal-dot[aria-current="true"]{background:#8d6a39;}
+  `;
+  document.head.appendChild(style);
+
+  // يبني الحاوية داخل نفس الـsection دون حذف أي محتوى قائم
+  function mount(){
+    const sec = document.querySelector(TARGET);
+    if(!sec) return false;
+
+    // لا تكرر البناء
+    if (sec.querySelector('.jf-container')) return true;
+
+    const box = document.createElement('div');
+    box.className = 'jf-container';
+
+    const img = document.createElement('img');
+    img.className = 'jf-img';
+    img.src = IMAGE_URL;
+    img.alt = 'آراء العملاء';
+    box.appendChild(img);
+
+    // زر واتساب
+    const add = document.createElement('a');
+    add.className = 'pin pin-add';
+    add.href = `https://wa.me/${WA_PHONE}?text=${WA_TEXT}`;
+    add.target = '_blank';
+    add.rel = 'noopener';
+    add.setAttribute('aria-label','فتح محادثة واتساب لإضافة رأي');
+    box.appendChild(add);
+
+    // زر المعرض
+    const galBtn = document.createElement('button');
+    galBtn.type = 'button';
+    galBtn.className = 'pin pin-gallery';
+    galBtn.setAttribute('aria-label','استعراض تجارب العملاء');
+    galBtn.addEventListener('click', openGallery);
+    box.appendChild(galBtn);
+
+    // أضف الحاوية كآخر ابن داخل نفس الـsection
+    sec.appendChild(box);
+
+    // مودال المعرض مرة واحدة
+    if (!document.getElementById('gallery-modal')){
+      const dlg = document.createElement('dialog');
+      dlg.id = 'gallery-modal';
+      dlg.className = 'gallery-modal';
+      dlg.innerHTML = `
+        <div class="gal-card" dir="rtl">
+          <div class="gal-head">
+            <strong>تجارب العملاء</strong>
+            <button class="gal-close" type="button" aria-label="إغلاق">✕</button>
+          </div>
+          <div class="gal-viewport">
+            <img id="gal-img" src="" alt="صورة تجربة عميل">
+          </div>
+          <div class="gal-nav">
+            <button id="gal-prev" class="gal-btn" type="button">السابق ‹</button>
+            <div class="gal-dots" id="gal-dots"></div>
+            <button id="gal-next" class="gal-btn" type="button">› التالي</button>
+          </div>
+        </div>`;
+      document.body.appendChild(dlg);
+      dlg.addEventListener('click', e => { if(e.target===dlg) dlg.close(); });
+      dlg.querySelector('.gal-close').addEventListener('click', ()=> dlg.close());
+      dlg.addEventListener('keydown', e => {
+        if(e.key==='ArrowRight') document.getElementById('gal-next')?.click();
+        if(e.key==='ArrowLeft')  document.getElementById('gal-prev')?.click();
+      });
+      wireGalleryNav();
+    }
+
+    return true;
+  }
+
+  // منطق المعرض
+  let galIndex = 0;
+  function renderDots(){
+    const dotsWrap = document.getElementById('gal-dots');
+    if(!dotsWrap) return;
+    dotsWrap.innerHTML = '';
+    GALLERY.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.className = 'gal-dot';
+      b.type = 'button';
+      if(i===galIndex) b.setAttribute('aria-current','true');
+      b.addEventListener('click', ()=>{ galIndex=i; showSlide(); });
+      dotsWrap.appendChild(b);
     });
   }
-  render(seed);
+  function showSlide(){
+    const img = document.getElementById('gal-img');
+    if(!img) return;
+    img.src = GALLERY[galIndex] || '';
+    renderDots();
+  }
+  function openGallery(){
+    if(!GALLERY.length) return;
+    galIndex = 0; showSlide();
+    document.getElementById('gallery-modal').showModal();
+  }
+  function wireGalleryNav(){
+    const prev = document.getElementById('gal-prev');
+    const next = document.getElementById('gal-next');
+    if(!prev || !next) return;
+    prev.addEventListener('click', ()=>{ galIndex = (galIndex - 1 + GALLERY.length) % GALLERY.length; showSlide(); });
+    next.addEventListener('click', ()=>{ galIndex = (galIndex + 1) % GALLERY.length; showSlide(); });
+  }
 
-  
-  const fab = document.getElementById("jeje-fab");
-  const menu = document.getElementById("jeje-menu");
-  let menuOpen = false;
-  function toggleMenu(v){menuOpen=v; menu.style.display = v ? "block":"none";}
-  fab.addEventListener("click", ()=>toggleMenu(!menuOpen));
-  document.addEventListener("click", (e)=>{
-    if (!menu.contains(e.target) && !fab.contains(e.target)) toggleMenu(false);
-  });
-
-  
-  const ok = document.getElementById("jeje-ok");
-  const err = document.getElementById("jeje-err");
-  document.getElementById("f-send").addEventListener("click", async ()=>{
-    ok.style.display="none"; err.style.display="none";
-    const name  = String(document.getElementById("f-name").value||"").slice(0,100).trim();
-    const email = String(document.getElementById("f-email").value||"").slice(0,160).trim();
-    const hide  = document.getElementById("f-hide").checked;
-    const msg   = String(document.getElementById("f-msg").value||"").slice(0,2000).trim();
-    const products = Array.from(document.querySelectorAll(".f-prod:checked")).map(x=>x.value);
-    if(!name || !email || !msg) return; // بدون أي حماية سبام إضافية
-
-    try{
-      const res = await fetch(ENDPOINT,{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          name, email, hide, products, message:msg, url:location.href, ua:navigator.userAgent
-        })
-      });
-      if(res.ok){
-        ok.style.display="block";
-       
-        seed.unshift({name: hide ? "مستخدم" : name, msg});
-        render(seed);
-        document.getElementById("f-name").value="";
-        document.getElementById("f-email").value="";
-        document.getElementById("f-msg").value="";
-        document.querySelectorAll(".f-prod:checked").forEach(x=>x.checked=false);
-        document.getElementById("f-hide").checked=false;
-        toggleMenu(false);
-      }else{
-        err.style.display="block";
-      }
-    }catch{ err.style.display="block"; }
-  });
+  // انتظار DOM وبناء داخل نفس السكشن
+  function tryMount(t=0){
+    if (mount()) return;
+    if (t<20) setTimeout(()=>tryMount(t+1),300);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tryMount);
+  } else {
+    tryMount();
+  }
 })();
+
