@@ -18,21 +18,59 @@
     .pin{position:absolute;transform:translate(-50%,-50%);width:75px;height:50px;
          background:transparent!important;border:0;box-shadow:none!important;border-radius:9999px;
          display:block;cursor:pointer;z-index:3;appearance:none;-webkit-appearance:none;padding:0;margin:0}
-  
-    .pin-add{top:70.5%;left:4.8%}     
-    .pin-gallery{top:25.5%;left:4.8%} 
-    dialog.gallery-modal{border:0;padding:0;background:transparent}
-    dialog.gallery-modal::backdrop{background:rgba(0,0,0,.5)}
-    .gal-card{width:min(96vw,860px);background:#efeae2;border-radius:20px;padding:12px;box-shadow:0 12px 40px rgba(0,0,0,.25)}
-    .gal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-    .gal-close{background:none;border:0;font-size:20px;cursor:pointer}
-    .gal-viewport{position:relative;overflow:hidden;border-radius:14px}
-    .gal-viewport img{display:block;width:100%;height:auto}
-    .gal-nav{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px}
-    .gal-btn{background:#8d6a39;color:#111;border:0;border-radius:12px;padding:10px 14px;cursor:pointer}
-    .gal-dots{display:flex;gap:6px;justify-content:center;align-items:center;margin-top:6px;flex-wrap:wrap}
-    .gal-dot{width:10px;height:10px;border-radius:9999px;background:#bfb7ae;border:0}
-    .gal-dot[aria-current="true"]{background:#8d6a39}
+
+    .pin-add{top:70.5%;left:4.8%}
+    .pin-gallery{top:25.5%;left:4.8%}
+
+    /* Modal */
+    dialog.gallery-modal{ border:0; padding:0; background:transparent; }
+    dialog.gallery-modal[open]{ display:flex; align-items:center; justify-content:center; }
+    dialog.gallery-modal::backdrop{ background:rgba(0,0,0,.6); }
+
+    /* البطاقة تملأ الشاشة على الجوال وتقيد على الديسكتوب */
+    .gal-card{
+      width:clamp(320px, 96vw, 860px);
+      max-height:92vh;
+      background:#efeae2;
+      border-radius:20px;
+      padding:12px;
+      box-shadow:0 12px 40px rgba(0,0,0,.25);
+      display:flex;
+      flex-direction:column;
+    }
+    @media (max-width:640px){
+      .gal-card{
+        width:100vw;
+        height:100dvh;
+        max-height:none;
+        border-radius:0;
+        padding:12px;
+      }
+    }
+
+    .gal-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+    .gal-close{ background:none; border:0; font-size:20px; cursor:pointer; }
+
+    /* مساحة العرض تتمدد وتقص الزائد بدون تشويه */
+    .gal-viewport{
+      position:relative;
+      flex:1;
+      min-height:0;
+      overflow:hidden;
+      border-radius:14px;
+    }
+    .gal-viewport img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
+
+    /* أزرار وتنقيط */
+    .gal-nav{ display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:8px; }
+    .gal-btn{ background:#8d6a39; color:#111; border:0; border-radius:12px; padding:10px 14px; cursor:pointer; }
+    .gal-dots{ display:flex; gap:6px; justify-content:center; align-items:center; margin-top:6px; flex-wrap:wrap; }
+    .gal-dot{ width:10px; height:10px; border-radius:9999px; background:#bfb7ae; border:0; }
+    .gal-dot[aria-current="true"]{ background:#8d6a39; }
   `;
   const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
 
@@ -78,12 +116,15 @@
         </div>
       </div>`;
     document.body.appendChild(dlg);
-    dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close() });
+    dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
     dlg.querySelector('.gal-close').addEventListener('click', () => dlg.close());
     dlg.addEventListener('keydown', e => {
       if (e.key === 'ArrowRight') document.getElementById('gal-next')?.click();
       if (e.key === 'ArrowLeft')  document.getElementById('gal-prev')?.click();
     });
+    // unlock on close/cancel
+    dlg.addEventListener('close', unlockScroll);
+    dlg.addEventListener('cancel', unlockScroll);
     wireGalleryNav();
   }
 
@@ -104,10 +145,22 @@
     img.src = GALLERY[galIndex] || '';
     renderDots();
   }
+  // Scroll lock helpers
+  function lockScroll(){
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+  }
+  function unlockScroll(){
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+  }
   function openGallery(){
     if (!GALLERY.length) return;
     galIndex = 0; showSlide();
-    document.getElementById('gallery-modal').showModal();
+    const dlg = document.getElementById('gallery-modal');
+    if (!dlg) return;
+    dlg.showModal();
+    lockScroll();
   }
   function wireGalleryNav(){
     const prev = document.getElementById('gal-prev');
