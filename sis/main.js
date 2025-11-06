@@ -434,9 +434,9 @@
       track.style.setProperty('--jf-distance', `-${distance}px`);
       const isMobile = window.matchMedia('(max-width: 640px)').matches;
       const reduce   = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let speed = isMobile ? 120 : 180; // px/sec (slower)
+      let speed = isMobile ? 100 : 160; // px/sec (slower again)
       if (reduce) speed *= 0.6;
-      const minDur = 3.5; // slightly slower baseline
+      const minDur = 4.0; // slightly slower baseline
       const duration = Math.max(distance / speed, minDur);
       track.style.setProperty('--jf-duration', `${duration}s`);
       track.style.animation = `jf-marquee-up linear ${duration}s infinite`;
