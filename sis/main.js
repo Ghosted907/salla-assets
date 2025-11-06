@@ -89,6 +89,20 @@
 
 
   function mount(){
+    // Prefer mounting after the fixed banner with the given target URL
+    const banner = Array.from(document.querySelectorAll('a.banner.banner--fixed, a.banner.banner--fixed.overflow-hidden'))
+      .find(a => {
+        const href = a.getAttribute('href') || a.href || '';
+        return href.includes('jejetallow.com/redirect/products/1879463664');
+      });
+    if (banner){
+      if (document.querySelector('.jf-container')) return true;
+      banner.insertAdjacentElement('afterend', buildBox());
+      ensureGalleryModal();
+      return true;
+    }
+
+    // Fallback: before footer if banner is not present
     const footer = document.querySelector('footer.store-footer');
     if (!footer) return false;
     if (document.querySelector('.jf-container')) return true;
