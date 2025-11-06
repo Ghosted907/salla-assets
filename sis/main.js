@@ -201,14 +201,22 @@
     .jf-track{ display:flex; flex-direction:column; gap:10px; animation-name:jf-marquee-up; animation-timing-function:linear; animation-iteration-count:infinite; will-change:transform; }
     .jf-item{ background:#fff; border:1px solid #ddd; border-radius:12px; padding:10px 12px; color:#19191a; box-shadow:0 2px 6px rgba(0,0,0,.05); }
     .jf-ticker:hover .jf-track{ animation-play-state:paused; }
-    @keyframes jf-marquee-up{ 0%{ transform:translateY(0);} 100%{ transform:translateY(-50%);} }
-    @media (prefers-reduced-motion: reduce){ .jf-track{ animation:none !important; } }
+    @keyframes jf-marquee-up{
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(var(--jf-distance, -50%)); }
+    }
+    /* بدل إيقاف الحركة بالكامل عند تفعيل تقليل الحركة، نجعلها أبطأ */
+    @media (prefers-reduced-motion: reduce){ .jf-track{ animation-duration: calc(var(--jf-duration, 8s) * 1.6) !important; } }
     /* Keep ticker overlaying the poster on all sizes (clipped by .jf-hero) */
     @media (max-width:640px){ .jf-ticker{ left:6%; right:6%; bottom:5%; height:clamp(80px, 24vw, 160px); } }
   `;
   const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
 
  
+  // ticker resize debounce flags
+  let jfTickerResizeBound = false;
+  let jfTickerResizeTimer = 0;
+
   function buildBox(){
     const box = document.createElement('div');
     box.className = 'jf-container';
@@ -401,6 +409,37 @@
       const halfHeight = track.scrollHeight / 2; // لأننا ضاعفنا المحتوى
       const duration = Math.max(halfHeight / SPEED_PX_PER_SEC, 1); // حد أدنى 3 ثوانٍ
       track.style.animationDuration = duration + 's';
+      track.dataset.ready = '1';
+    });
+
+    // Recalculate on resize with debounce
+    if (!jfTickerResizeBound){
+      window.addEventListener('resize', () => {
+        clearTimeout(jfTickerResizeTimer);
+        jfTickerResizeTimer = setTimeout(() => {
+          const t = document.getElementById('jf-track');
+          if (!t) return;
+          t.dataset.ready = '0';
+          t.style.animation = 'none';
+          void t.offsetHeight; // force reflow
+          initTicker();
+        }, 250);
+      }, { passive:true });
+      jfTickerResizeBound = true;
+    }
+
+    // override with pixel-based distance + dynamic duration
+    requestAnimationFrame(() => {
+      const distance = Math.ceil(track.scrollHeight / 2); // px because content is duplicated
+      track.style.setProperty('--jf-distance', `-${distance}px`);
+      const isMobile = window.matchMedia('(max-width: 640px)').matches;
+      const reduce   = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let speed = isMobile ? 240 : 360; // px/sec
+      if (reduce) speed *= 0.6;
+      const minDur = isMobile ? 1.0 : 1.1;
+      const duration = Math.max(distance / speed, minDur);
+      track.style.setProperty('--jf-duration', `${duration}s`);
+      track.style.animation = `jf-marquee-up linear ${duration}s infinite`;
       track.dataset.ready = '1';
     });
   }
