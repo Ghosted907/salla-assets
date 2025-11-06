@@ -1,7 +1,7 @@
 
 (() => {
  
-  const IMAGE_URL = 'https://ghosted907.github.io/salla-assets/sis/4.png';
+  const IMAGE_URL = 'https://ghosted907.github.io/salla-assets/sis/1.png';
   const WA_PHONE  = '966557042544'; 
   const WA_TEXT   = encodeURIComponent('أرغب بإضافة رأيي حول المنتج');
   const GALLERY = [
