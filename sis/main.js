@@ -155,7 +155,7 @@
         height:100dvh;
         max-height:none;
         border-radius:0;
-        padding:12px;
+        padding:9%;
       }
     }
 
