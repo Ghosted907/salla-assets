@@ -1,7 +1,7 @@
 
 (() => {
  
-  const IMAGE_URL = 'https://ghosted907.github.io/salla-assets/sis/4.png';
+  const IMAGE_URL = 'https://ghosted907.github.io/salla-assets/sis/5.png';
   const WA_PHONE  = '966557042544'; 
   const WA_TEXT   = encodeURIComponent('أرغب بإضافة رأيي حول المنتج');
   const GALLERY = [
@@ -130,8 +130,8 @@
          background:transparent!important;border:0;box-shadow:none!important;border-radius:9999px;
          display:block;cursor:pointer;z-index:3;appearance:none;-webkit-appearance:none;padding:0;margin:0}
 
-    .pin-add{top:92.5%;left:5.8%}
-    .pin-gallery{top:8.5%;left:5.8%}
+    .pin-add{top:91.5%;left:93.8%}
+    .pin-gallery{top:91.5%;left:4.8%}
 
     /* Modal */
     dialog.gallery-modal{ border:0; padding:0; background:transparent; }
@@ -184,7 +184,7 @@
     .gal-dot[aria-current="true"]{ background:#8d6a39; }
 
     /* ===== شريط الآراء المتحرك ===== */
-    .jf-ticker{ position:absolute; left:1px; right:8%; bottom:20%; height:140px; background:rgba(239,234,226,.80); border-radius:16px; padding:160px 14px; overflow:hidden; z-index:2; display:flex; align-items:stretch; }
+    .jf-ticker{ position:absolute; left:1px; right:8%; bottom:20%; height:140px; background:rgba(239,234,226,.80); border-radius:16px; padding:180px 14px; overflow:hidden; z-index:2; display:flex; align-items:stretch; }
     .jf-track{ display:flex; flex-direction:column; gap:10px; animation-name:jf-marquee-up; animation-timing-function:linear; animation-iteration-count:infinite; will-change:transform; }
     .jf-item{ background:#fff; border:1px solid #ddd; border-radius:12px; padding:10px 12px; color:#19191a; box-shadow:0 2px 6px rgba(0,0,0,.05); }
     .jf-ticker:hover .jf-track{ animation-play-state:paused; }
@@ -195,7 +195,7 @@
     /* بدل إيقاف الحركة بالكامل عند تفعيل تقليل الحركة، نجعلها أبطأ */
     @media (prefers-reduced-motion: reduce){ .jf-track{ animation-duration: calc(var(--jf-duration, 8s) * 1.6) !important; } }
     /* Keep ticker overlaying the poster on all sizes (clipped by .jf-hero) */
-    @media (max-width:640px){ .jf-ticker{ left:6%; right:6%; bottom:5%; height:clamp(80px, 24vw, 160px); } }
+    @media (max-width:640px){ .jf-ticker{ left:4%; right:4%; bottom:14%; height:clamp(80px, 24vw, 180px); } }
   `;
   const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
 
