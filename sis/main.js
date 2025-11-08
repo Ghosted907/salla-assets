@@ -284,7 +284,7 @@
     dlg.innerHTML = `
       <div class="gal-card" dir="rtl">
         <div class="gal-head">
-          <strong>تجارب العملاء</strong>
+          <strong>تجارب الجميلات💕</strong>
           <button class="gal-close" type="button" aria-label="إغلاق">✕</button>
         </div>
         <div class="gal-viewport"><img id="gal-img" src="" alt="صورة تجربة عميل"></div>
