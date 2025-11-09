@@ -121,26 +121,25 @@
   'وان شاء الله مو اخر مره اتعامل معاك، الله يوفقك ويسعدك ويبارك في رزقك 🤍🤍',
   ];
 
-  // CSS
-  const css = `
+  // CSSconst css = `
   .jf-container{position:relative;display:block;width:100%;max-width:1200px;margin:12px auto;}
 
-  /* بوستر الصورة المستخدمة (نسبة الأبعاد من الصورة: 428×510) */
+  /* الصورة (نسبة الأبعاد تقارب 428×510) */
   .jf-hero{
-    position:relative;display:block;width:100%;border-radius:40px;overflow:hidden;
-    aspect-ratio: 428 / 510; /* مهم لتطابق الإحداثيات عبر الأجهزة */
+    position:relative;display:block;width:100%;
+    border-radius:40px;
+    overflow:visible;                 /* كان hidden ويقص الشريط */
+    aspect-ratio: 428 / 510;
   }
   .jf-img{display:block;width:100%;height:auto}
 
-  /* الأزرار تبقى قريبة من حجم الآيفون وتتكيف مع غيره */
+  /* أزرار */
   .pin{
     position:absolute;transform:translate(-50%,-50%);
-    width: clamp(48px, 7vw, 75px);
-    height: clamp(32px, 4.6vw, 50px);
+    width: clamp(48px, 7vw, 75px); height: clamp(32px, 4.6vw, 50px);
     background:transparent!important;border:0;box-shadow:none!important;border-radius:9999px;
     display:block;cursor:pointer;z-index:3;appearance:none;-webkit-appearance:none;padding:0;margin:0
   }
-  /* نفس مواقع iPhone 14 Pro Max ولكنها الآن ثابتة بسبب aspect-ratio */
   .pin-add{top:91.5%;left:93.8%}
   .pin-gallery{top:91.5%;left:4.8%}
 
@@ -170,12 +169,15 @@
 
   /* ===== شريط الآراء المتحرك ===== */
   .jf-ticker{
-    position:absolute; left:50%; transform:translateX(-50%);
-    bottom: clamp(6%, 9vw, 14%);
+    position:absolute;
+    left:50%; transform:translateX(-50%);
+    bottom: clamp(4%, 7vw, 12%);      /* كان منخفضًا جدًا */
     width: min(92%, 1000px);
-    height: clamp(90px, 20vw, 160px);
-    background:rgba(239,234,226,.80); border-radius:16px;
-    padding:10px 12px; overflow:hidden; z-index:2; display:flex; align-items:stretch;
+    height: clamp(80px, 22vw, 150px);
+    background:rgba(239,234,226,.80);
+    border-radius:16px;
+    padding:8px 10px;                  /* أزلنا الـ 180px */
+    overflow:hidden; z-index:4; display:flex; align-items:stretch;
   }
   .jf-track{
     display:flex; flex-direction:column; gap:10px;
@@ -201,15 +203,15 @@
     .jf-track{ animation-duration: calc(var(--jf-duration, 10s) * 1.6) !important; }
   }
 
-  /* ضبط أدق على الشاشات الصغيرة */
   @media (max-width:640px){
     .jf-ticker{
-      bottom: clamp(4%, 8vw, 12%);
-      height: clamp(80px, 24vw, 150px);
+      bottom: clamp(3%, 6vw, 10%);
+      height: clamp(72px, 24vw, 140px);
       padding: 8px 10px;
     }
   }
 `;
+
 
   const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
 
