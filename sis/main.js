@@ -123,80 +123,94 @@
 
   // CSS
   const css = `
-    .jf-container{position:relative;display:block;width:100%;max-width:1200px;margin:12px auto;}
-    .jf-hero{position:relative;display:block;width:100%;border-radius:40px;overflow:hidden}
-    .jf-img{display:block;width:100%;height:auto}
-    .pin{position:absolute;transform:translate(-50%,-50%);width:75px;height:50px;
-         background:transparent!important;border:0;box-shadow:none!important;border-radius:9999px;
-         display:block;cursor:pointer;z-index:3;appearance:none;-webkit-appearance:none;padding:0;margin:0}
+  .jf-container{position:relative;display:block;width:100%;max-width:1200px;margin:12px auto;}
 
-    .pin-add{top:91.5%;left:93.8%}
-    .pin-gallery{top:91.5%;left:4.8%}
+  /* بوستر الصورة المستخدمة (نسبة الأبعاد من الصورة: 428×510) */
+  .jf-hero{
+    position:relative;display:block;width:100%;border-radius:40px;overflow:hidden;
+    aspect-ratio: 428 / 510; /* مهم لتطابق الإحداثيات عبر الأجهزة */
+  }
+  .jf-img{display:block;width:100%;height:auto}
 
-    /* Modal */
-    dialog.gallery-modal{ border:0; padding:0; background:transparent; }
-    dialog.gallery-modal[open]{ display:flex; align-items:center; justify-content:center; }
-    dialog.gallery-modal::backdrop{ background:rgba(0,0,0,.6); }
+  /* الأزرار تبقى قريبة من حجم الآيفون وتتكيف مع غيره */
+  .pin{
+    position:absolute;transform:translate(-50%,-50%);
+    width: clamp(48px, 7vw, 75px);
+    height: clamp(32px, 4.6vw, 50px);
+    background:transparent!important;border:0;box-shadow:none!important;border-radius:9999px;
+    display:block;cursor:pointer;z-index:3;appearance:none;-webkit-appearance:none;padding:0;margin:0
+  }
+  /* نفس مواقع iPhone 14 Pro Max ولكنها الآن ثابتة بسبب aspect-ratio */
+  .pin-add{top:91.5%;left:93.8%}
+  .pin-gallery{top:91.5%;left:4.8%}
 
-    /* البطاقة تملأ الشاشة على الجوال وتقيد على الديسكتوب */
-    .gal-card{
-      width:clamp(320px, 96vw, 860px);
-      max-height:92vh;
-      background:#efeae2;
-      border-radius:20px;
-      padding:12px;
-      box-shadow:0 12px 40px rgba(0,0,0,.25);
-      display:flex;
-      flex-direction:column;
+  /* Modal */
+  dialog.gallery-modal{border:0;padding:0;background:transparent;}
+  dialog.gallery-modal[open]{display:flex;align-items:center;justify-content:center;}
+  dialog.gallery-modal::backdrop{background:rgba(0,0,0,.6);}
+
+  /* بطاقة المعرض */
+  .gal-card{
+    width:clamp(320px,96vw,860px);
+    max-height:92vh;background:#efeae2;border-radius:20px;padding:12px;
+    box-shadow:0 12px 40px rgba(0,0,0,.25);display:flex;flex-direction:column;
+  }
+  @media (max-width:640px){
+    .gal-card{width:100vw;height:100dvh;max-height:none;border-radius:0;padding:9%;}
+  }
+  .gal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .gal-close{background:none;border:0;font-size:20px;cursor:pointer;}
+  .gal-viewport{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:14px;}
+  .gal-viewport img{width:100%;height:100%;object-fit:contain;}
+  .gal-nav{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;}
+  .gal-btn{background:#8d6a39;color:#111;border:0;border-radius:12px;padding:10px 14px;cursor:pointer;}
+  .gal-dots{display:flex;gap:6px;justify-content:center;align-items:center;margin-top:6px;flex-wrap:wrap;}
+  .gal-dot{width:10px;height:10px;border-radius:9999px;background:#bfb7ae;border:0;}
+  .gal-dot[aria-current="true"]{background:#8d6a39;}
+
+  /* ===== شريط الآراء المتحرك ===== */
+  .jf-ticker{
+    position:absolute; left:50%; transform:translateX(-50%);
+    bottom: clamp(6%, 9vw, 14%);
+    width: min(92%, 1000px);
+    height: clamp(90px, 20vw, 160px);
+    background:rgba(239,234,226,.80); border-radius:16px;
+    padding:10px 12px; overflow:hidden; z-index:2; display:flex; align-items:stretch;
+  }
+  .jf-track{
+    display:flex; flex-direction:column; gap:10px;
+    --jf-distance:-100%;
+    animation-name:jf-marquee-up;
+    animation-duration: var(--jf-duration, 10s);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform;
+  }
+  .jf-item{
+    background:#fff; border:1px solid #ddd; border-radius:12px;
+    padding:10px 12px; color:#19191a; box-shadow:0 2px 6px rgba(0,0,0,.05);
+  }
+  .jf-ticker:hover .jf-track{animation-play-state:paused;}
+
+  @keyframes jf-marquee-up{
+    0% { transform: translateY(0); }
+    100% { transform: translateY(var(--jf-distance)); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .jf-track{ animation-duration: calc(var(--jf-duration, 10s) * 1.6) !important; }
+  }
+
+  /* ضبط أدق على الشاشات الصغيرة */
+  @media (max-width:640px){
+    .jf-ticker{
+      bottom: clamp(4%, 8vw, 12%);
+      height: clamp(80px, 24vw, 150px);
+      padding: 8px 10px;
     }
-    @media (max-width:640px){
-      .gal-card{
-        width:100vw;
-        height:100dvh;
-        max-height:none;
-        border-radius:0;
-        padding:9%;
-      }
-    }
+  }
+`;
 
-    .gal-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-    .gal-close{ background:none; border:0; font-size:20px; cursor:pointer; }
-
-    /* مساحة العرض تتمدد وتقص الزائد بدون تشويه */
-    .gal-viewport{
-      position:relative;
-      flex:1;
-      min-height:0;
-      overflow:hidden;
-      border-radius:14px;
-    }
-    .gal-viewport img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-    }
-
-    /* أزرار وتنقيط */
-    .gal-nav{ display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:8px; }
-    .gal-btn{ background:#8d6a39; color:#111; border:0; border-radius:12px; padding:10px 14px; cursor:pointer; }
-    .gal-dots{ display:flex; gap:6px; justify-content:center; align-items:center; margin-top:6px; flex-wrap:wrap; }
-    .gal-dot{ width:10px; height:10px; border-radius:9999px; background:#bfb7ae; border:0; }
-    .gal-dot[aria-current="true"]{ background:#8d6a39; }
-
-    /* ===== شريط الآراء المتحرك ===== */
-    .jf-ticker{ position:absolute; left:1px; right:8%; bottom:20%; height:140px; background:rgba(239,234,226,.80); border-radius:16px; padding:180px 14px; overflow:hidden; z-index:2; display:flex; align-items:stretch; }
-    .jf-track{ display:flex; flex-direction:column; gap:10px; animation-name:jf-marquee-up; animation-timing-function:linear; animation-iteration-count:infinite; will-change:transform; }
-    .jf-item{ background:#fff; border:1px solid #ddd; border-radius:12px; padding:10px 12px; color:#19191a; box-shadow:0 2px 6px rgba(0,0,0,.05); }
-    .jf-ticker:hover .jf-track{ animation-play-state:paused; }
-    @keyframes jf-marquee-up{
-      0%   { transform: translateY(0); }
-      100% { transform: translateY(var(--jf-distance, -50%)); }
-    }
-    /* بدل إيقاف الحركة بالكامل عند تفعيل تقليل الحركة، نجعلها أبطأ */
-    @media (prefers-reduced-motion: reduce){ .jf-track{ animation-duration: calc(var(--jf-duration, 8s) * 1.6) !important; } }
-    /* Keep ticker overlaying the poster on all sizes (clipped by .jf-hero) */
-    @media (max-width:640px){ .jf-ticker{ left:4%; right:4%; bottom:14%; height:clamp(80px, 24vw, 180px); } }
-  `;
   const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
 
  
