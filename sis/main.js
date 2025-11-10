@@ -74,7 +74,7 @@
     .jf-reviews-inner{
       background:#eddfc8;
       border-radius:24px;
-      border:1px solid #937647;
+      border:2px solid #937647;
       padding:16px 18px;
       box-sizing:border-box;
     }
