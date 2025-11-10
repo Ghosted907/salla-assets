@@ -110,7 +110,7 @@
       font-size:0.9rem;
       line-height:1.7;
       color:#2b2115;
-      border-bottom:1px solid rgba(0,0,0,0.08);
+      border-bottom:2px solid #937647;
       padding-bottom:6px;
 	  white-space: pre-line;
     }
@@ -151,7 +151,7 @@
       const distance = Math.ceil(halfHeight);
       const isMobile = window.innerWidth <= 768;
       const minDur = 40;
-      const speed = isMobile ? 60 : 120; // px/sec
+      const speed = isMobile ? 55 : 110; 
       const duration = Math.max(distance / speed, minDur);
 
       track.style.setProperty('--jf-distance', `-${distance}px`);
