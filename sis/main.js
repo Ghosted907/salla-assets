@@ -110,7 +110,7 @@
       font-size:0.9rem;
       line-height:1.7;
       color:#2b2115;
-      border-bottom:2px solid #937647;
+      border-bottom:1.5px solid #937647;
       padding-bottom:6px;
 	  white-space: pre-line;
     }
