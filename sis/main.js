@@ -1,7 +1,7 @@
 (() => {
   
   const REVIEWS_TEXT = [
-   'وصلت الطلبيه اليوم /n الكريم بعطر الما يجنننننن ما قد سمعت احد يمدحه بس صراحه روعه 🙏🏼',
+   'وصلت الطلبيه اليوم الكريم بعطر الما يجنننننن ما قد سمعت احد يمدحه بس صراحه روعه 🙏🏼',
    'والله انتي الذوق وربي عطر الما خرافي يجنن يسلم ذوقك من حطيته الزبدة على يدي والملمس زي الحرير شكرا من اعماق القلب على المنتج الاكثر من رائع واكيد عميلة دائمة باذن الله 🙏🏼❤❤❤',
    'يا حبيبي على الذوق 🤦🏻‍♀❤',
    'يعطيك الف عافيه وداعمه لك تستاهلين كل خير ❤❤❤',
@@ -110,7 +110,7 @@
    'وان شاء الله مو اخر مره اتعامل معاك، الله يوفقك ويسعدك ويبارك في رزقك 🤍🤍',
   ];
 
-  // CSS: خلفية واحدة فقط #eddfc8 بدون صور وبدون أزرار
+  // CSS
   const css = `
     .jf-reviews-container{
       width:100%;
@@ -121,14 +121,22 @@
     .jf-reviews-inner{
       background:#eddfc8;
       border-radius:24px;
+      border:1px solid #5E5E5E;
       padding:16px 18px;
       box-sizing:border-box;
     }
+    .jf-reviews-title-wrap{
+      display:inline-block;
+      background:#5E5E5E;
+      border-radius:999px;
+      padding:4px 18px;
+      margin-bottom:10px;
+    }
     .jf-reviews-title{
-      font-size:1.1rem;
+      margin:0;
+      font-size:1rem;
       font-weight:600;
-      margin:0 0 10px;
-      color:#3b2a18;
+      color:#ffffff;
     }
     .jf-reviews-list{
       max-height:280px;
@@ -137,6 +145,7 @@
       flex-direction:column;
       gap:8px;
       padding-right:4px;
+      scroll-behavior:smooth;
     }
     .jf-review-item{
       font-size:0.9rem;
@@ -163,6 +172,55 @@
   style.textContent = css;
   document.head.appendChild(style);
 
+
+  function startAutoScroll(listEl){
+    if (!listEl) return;
+    if (listEl.scrollHeight <= listEl.clientHeight + 5) return;
+
+    let frameId = null;
+    let resumeTimeout = null;
+    const SPEED = 0.4; 
+
+    const loop = () => {
+      listEl.scrollTop += SPEED;
+      if (listEl.scrollTop + listEl.clientHeight >= listEl.scrollHeight - 1){
+        listEl.scrollTop = 0;
+      }
+      frameId = requestAnimationFrame(loop);
+    };
+
+    const start = () => {
+      if (frameId !== null) return;
+      frameId = requestAnimationFrame(loop);
+    };
+
+    const stop = () => {
+      if (frameId === null) return;
+      cancelAnimationFrame(frameId);
+      frameId = null;
+    };
+
+    listEl.addEventListener('mouseenter', () => {
+      stop();
+      if (resumeTimeout) clearTimeout(resumeTimeout);
+    });
+
+    listEl.addEventListener('mouseleave', () => {
+      if (resumeTimeout) clearTimeout(resumeTimeout);
+      resumeTimeout = setTimeout(start, 800);
+    });
+
+    listEl.addEventListener('wheel', () => {
+      
+      stop();
+      if (resumeTimeout) clearTimeout(resumeTimeout);
+      resumeTimeout = setTimeout(start, 3000);
+    });
+
+    start();
+  }
+
+  
   function buildBox(){
     const box = document.createElement('section');
     box.className = 'jf-reviews-container';
@@ -170,7 +228,9 @@
 
     box.innerHTML = `
       <div class="jf-reviews-inner">
-        <h2 class="jf-reviews-title">آراء الجميلات</h2>
+        <div class="jf-reviews-title-wrap">
+          <h2 class="jf-reviews-title">آراء الجميلات</h2>
+        </div>
         <div class="jf-reviews-list" id="jf-reviews-list"></div>
       </div>
     `;
@@ -179,16 +239,18 @@
     REVIEWS_TEXT.forEach(t => {
       const item = document.createElement('div');
       item.className = 'jf-review-item';
-      item.textContent = t; 
+      item.textContent = t;
       listEl.appendChild(item);
     });
+
+   
+    startAutoScroll(listEl);
 
     return box;
   }
 
-  
+ 
   function mount(){
-  
     const targetSection = Array.from(
       document.querySelectorAll('section.s-block.s-block--fixed-banner.wide-placeholder')
     ).find(sec => {
@@ -204,7 +266,6 @@
       return true;
     }
 
- 
     const catBanner = Array.from(
       document.querySelectorAll('a.banner.banner--fixed, a.banner.banner--fixed.overflow-hidden')
     ).find(a => {
@@ -217,7 +278,6 @@
       return true;
     }
 
- 
     const prodBanner = Array.from(
       document.querySelectorAll('a.banner.banner--fixed, a.banner.banner--fixed.overflow-hidden')
     ).find(a => {
@@ -230,7 +290,6 @@
       return true;
     }
 
- 
     const footer = document.querySelector('footer.store-footer');
     if (!footer) return false;
     if (document.querySelector('.jf-reviews-container')) return true;
