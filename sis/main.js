@@ -1,5 +1,5 @@
 (() => {
-  // نصوص آراء العميلات
+
   const REVIEWS_TEXT = [
    'وصلت الطلبيه اليوم الكريم بعطر الما يجنننننن ما قد سمعت احد يمدحه بس صراحه روعه 🙏🏼',
    'والله انتي الذوق وربي عطر الما خرافي يجنن يسلم ذوقك من حطيته الزبدة على يدي والملمس زي الحرير شكرا من اعماق القلب على المنتج الاكثر من رائع واكيد عميلة دائمة باذن الله 🙏🏼❤❤❤',
@@ -110,7 +110,7 @@
    'وان شاء الله مو اخر مره اتعامل معاك، الله يوفقك ويسعدك ويبارك في رزقك 🤍🤍'
   ];
 
-  // CSS: خلفية، حدود، عنوان داخل كبسولة، مع مسار متحرك
+  
   const css = `
     .jf-reviews-container{
       width:100%;
@@ -121,13 +121,13 @@
     .jf-reviews-inner{
       background:#eddfc8;
       border-radius:24px;
-      border:1px solid ##9C7940;
+      border:1px solid #937647;
       padding:16px 18px;
       box-sizing:border-box;
     }
     .jf-reviews-title-wrap{
       display:inline-block;
-      background:#9C7940;
+      background:#937647;
       border-radius:999px;
       padding:4px 18px;
       margin-bottom:10px;
@@ -233,7 +233,7 @@
     box.innerHTML = `
       <div class="jf-reviews-inner">
         <div class="jf-reviews-title-wrap">
-          <h2 class="jf-reviews-title">💕آراء الجميلات</h2>
+          <h2 class="jf-reviews-title">آراء الجميلات💕</h2>
         </div>
         <div class="jf-reviews-viewport">
           <div class="jf-reviews-track" id="jf-reviews-track"></div>
