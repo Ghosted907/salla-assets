@@ -158,6 +158,7 @@
       color:#2b2115;
       border-bottom:1px solid rgba(0,0,0,0.08);
       padding-bottom:6px;
+	  white-space: pre-line;
     }
     .jf-review-item:last-child{
       border-bottom:none;
