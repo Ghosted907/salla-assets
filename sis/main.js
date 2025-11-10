@@ -1,5 +1,5 @@
 (() => {
-  
+  // نصوص آراء العميلات
   const REVIEWS_TEXT = [
    'وصلت الطلبيه اليوم الكريم بعطر الما يجنننننن ما قد سمعت احد يمدحه بس صراحه روعه 🙏🏼',
    'والله انتي الذوق وربي عطر الما خرافي يجنن يسلم ذوقك من حطيته الزبدة على يدي والملمس زي الحرير شكرا من اعماق القلب على المنتج الاكثر من رائع واكيد عميلة دائمة باذن الله 🙏🏼❤❤❤',
@@ -107,10 +107,10 @@
    'البشرة صارت صحية والآثار خفت والخطوط حوالين الفم تقريبًا اختفت حتى خدودي صارت ورديه😭😭',
    'وحتى جربت احطه على شفايفي قبل النوم زي الماسك ولاحضت مع الوقت اغلب الخطوط بشفايفي اختفت',
    'شي خيياال وربي مو مبالغه لو اتكلم من اليوم لبكرا مارح اوفيه حقه',
-   'وان شاء الله مو اخر مره اتعامل معاك، الله يوفقك ويسعدك ويبارك في رزقك 🤍🤍',
+   'وان شاء الله مو اخر مره اتعامل معاك، الله يوفقك ويسعدك ويبارك في رزقك 🤍🤍'
   ];
 
-  // CSS
+  // CSS: خلفية، حدود، عنوان داخل كبسولة، مع مسار متحرك
   const css = `
     .jf-reviews-container{
       width:100%;
@@ -121,7 +121,7 @@
     .jf-reviews-inner{
       background:#eddfc8;
       border-radius:24px;
-      border:1px solid #9C7940;
+      border:1px solid ##9C7940;
       padding:16px 18px;
       box-sizing:border-box;
     }
@@ -138,14 +138,20 @@
       font-weight:600;
       color:#ffffff;
     }
-    .jf-reviews-list{
+    .jf-reviews-viewport{
       max-height:280px;
       overflow-y:auto;
+      position:relative;
+    }
+    .jf-reviews-track{
       display:flex;
       flex-direction:column;
       gap:8px;
-      padding-right:4px;
-      scroll-behavior:smooth;
+      will-change:transform;
+      animation-timing-function:linear;
+      animation-iteration-count:infinite;
+      animation-name:jf-marquee-up;
+      animation-duration:var(--jf-duration,60s);
     }
     .jf-review-item{
       font-size:0.9rem;
@@ -158,12 +164,16 @@
       border-bottom:none;
       padding-bottom:0;
     }
+    @keyframes jf-marquee-up{
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(var(--jf-distance, -50%)); }
+    }
     @media (max-width:640px){
       .jf-reviews-inner{
         border-radius:18px;
         padding:14px 14px;
       }
-      .jf-reviews-list{
+      .jf-reviews-viewport{
         max-height:320px;
       }
     }
@@ -172,55 +182,49 @@
   style.textContent = css;
   document.head.appendChild(style);
 
+  // تشغيل الأنيميشن بنفس منطق السكربت القديم
+  function initTicker(track){
+    if (!track) return;
+    if (track.dataset.ready === '1') return;
+    track.dataset.ready = '1';
 
-  function startAutoScroll(listEl){
-    if (!listEl) return;
-    if (listEl.scrollHeight <= listEl.clientHeight + 5) return;
+    const makeItem = t => `<div class="jf-review-item">${t}</div>`;
+    // نكرر القائمة مرتين لتمرير لا نهائي
+    track.innerHTML = REVIEWS_TEXT.map(makeItem).join('') + REVIEWS_TEXT.map(makeItem).join('');
 
-    let frameId = null;
+    requestAnimationFrame(() => {
+      const halfHeight = track.scrollHeight / 2;
+      const distance = Math.ceil(halfHeight);
+      const isMobile = window.innerWidth <= 768;
+      const minDur = 40;
+      const speed = isMobile ? 60 : 120; // px/sec
+      const duration = Math.max(distance / speed, minDur);
+
+      track.style.setProperty('--jf-distance', `-${distance}px`);
+      track.style.setProperty('--jf-duration', `${duration}s`);
+      track.style.animationDuration = `${duration}s`;
+      track.style.animationPlayState = 'running';
+    });
+
+    // إيقاف عند الماوس واستئناف عند الخروج
+    track.addEventListener('mouseenter', () => {
+      track.style.animationPlayState = 'paused';
+    });
+    track.addEventListener('mouseleave', () => {
+      track.style.animationPlayState = 'running';
+    });
+    // إذا المستخدم لف بالماوس نوقف مؤقتًا ثم نرجع نشغل
     let resumeTimeout = null;
-    const SPEED = 0.4; 
-
-    const loop = () => {
-      listEl.scrollTop += SPEED;
-      if (listEl.scrollTop + listEl.clientHeight >= listEl.scrollHeight - 1){
-        listEl.scrollTop = 0;
-      }
-      frameId = requestAnimationFrame(loop);
-    };
-
-    const start = () => {
-      if (frameId !== null) return;
-      frameId = requestAnimationFrame(loop);
-    };
-
-    const stop = () => {
-      if (frameId === null) return;
-      cancelAnimationFrame(frameId);
-      frameId = null;
-    };
-
-    listEl.addEventListener('mouseenter', () => {
-      stop();
+    track.parentElement.addEventListener('wheel', () => {
+      track.style.animationPlayState = 'paused';
       if (resumeTimeout) clearTimeout(resumeTimeout);
+      resumeTimeout = setTimeout(() => {
+        track.style.animationPlayState = 'running';
+      }, 3000);
     });
-
-    listEl.addEventListener('mouseleave', () => {
-      if (resumeTimeout) clearTimeout(resumeTimeout);
-      resumeTimeout = setTimeout(start, 800);
-    });
-
-    listEl.addEventListener('wheel', () => {
-      
-      stop();
-      if (resumeTimeout) clearTimeout(resumeTimeout);
-      resumeTimeout = setTimeout(start, 3000);
-    });
-
-    start();
   }
 
-  
+  // يبني بلوك الآراء
   function buildBox(){
     const box = document.createElement('section');
     box.className = 'jf-reviews-container';
@@ -229,27 +233,20 @@
     box.innerHTML = `
       <div class="jf-reviews-inner">
         <div class="jf-reviews-title-wrap">
-          <h2 class="jf-reviews-title">آراء الجميلات</h2>
+          <h2 class="jf-reviews-title">💕آراء الجميلات</h2>
         </div>
-        <div class="jf-reviews-list" id="jf-reviews-list"></div>
+        <div class="jf-reviews-viewport">
+          <div class="jf-reviews-track" id="jf-reviews-track"></div>
+        </div>
       </div>
     `;
 
-    const listEl = box.querySelector('#jf-reviews-list');
-    REVIEWS_TEXT.forEach(t => {
-      const item = document.createElement('div');
-      item.className = 'jf-review-item';
-      item.textContent = t;
-      listEl.appendChild(item);
-    });
-
-   
-    startAutoScroll(listEl);
-
+    const track = box.querySelector('#jf-reviews-track');
+    initTicker(track);
     return box;
   }
 
- 
+  // نفس منطق الحقن السابق
   function mount(){
     const targetSection = Array.from(
       document.querySelectorAll('section.s-block.s-block--fixed-banner.wide-placeholder')
