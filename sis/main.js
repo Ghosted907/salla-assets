@@ -121,13 +121,13 @@
     .jf-reviews-inner{
       background:#eddfc8;
       border-radius:24px;
-      border:1px solid #5E5E5E;
+      border:1px solid #9C7940;
       padding:16px 18px;
       box-sizing:border-box;
     }
     .jf-reviews-title-wrap{
       display:inline-block;
-      background:#5E5E5E;
+      background:#9C7940;
       border-radius:999px;
       padding:4px 18px;
       margin-bottom:10px;
