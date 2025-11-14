@@ -282,7 +282,7 @@
       overlay.className = 'jf-gallery-overlay';
       overlay.style.position = 'fixed';
       overlay.style.inset = '0';
-      overlay.style.background = 'rgba(0,0,0,0.7)';
+      overlay.style.background = '#ffffff';
       overlay.style.zIndex = '9999';
       overlay.style.display = 'flex';
       overlay.style.alignItems = 'center';
@@ -294,8 +294,8 @@
       box.setAttribute('role', 'dialog');
       box.setAttribute('aria-modal', 'true');
       box.style.background = '#ffffff';
-      box.style.width = 'calc(100vw - 32px)';
-      box.style.height = 'calc(100vh - 32px)';
+      box.style.width = 'auto';
+      box.style.height = 'auto';
       box.style.maxWidth = 'calc(100vw - 32px)';
       box.style.maxHeight = 'calc(100vh - 32px)';
       box.style.overflow = 'hidden';
@@ -526,16 +526,14 @@
     grid.style.display = 'flex';
     grid.style.alignItems = 'center';
     grid.style.justifyContent = 'center';
-    grid.style.width = '100%';
-    grid.style.height = 'calc(100% - 60px)';
-    grid.style.maxWidth = 'calc(100vw - 32px)';
-    grid.style.maxHeight = 'calc(100vh - 92px)';
     grid.style.margin = '0 auto';
     grid.style.overflow = 'hidden';
 
     imgs.forEach(el => {
-      el.style.width = '100%';
-      el.style.height = '100%';
+      el.style.maxWidth = 'calc(100vw - 32px)';
+      el.style.maxHeight = 'calc(100vh - 92px)';
+      el.style.width = 'auto';
+      el.style.height = 'auto';
       el.style.objectFit = 'contain';
     });
   }, 250);
