@@ -504,7 +504,7 @@
     });
 
     btnPrev.textContent = '▶';
-    btnNext.textContent = '◀️';
+    btnNext.textContent = '◀';
 
     return true;
   }
@@ -531,7 +531,6 @@
 
     imgs.forEach(el => {
       el.style.maxWidth = 'calc(100vw - 32px)';
-      // اجعل ارتفاع الصورة أقل من ارتفاع الشاشة لإبقاء الأزرار ظاهرة داخل الحاوية
       el.style.maxHeight = 'calc(87vh - 80px)';
       el.style.width = 'auto';
       el.style.height = 'auto';
