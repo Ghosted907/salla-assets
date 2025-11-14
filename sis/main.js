@@ -503,8 +503,8 @@
       show(index + 1);
     });
 
-    btnPrev.textContent = '<';
-    btnNext.textContent = '>';
+    btnPrev.textContent = '⬅️';
+    btnNext.textContent = '➡️';
 
     return true;
   }
