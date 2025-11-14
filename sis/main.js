@@ -531,7 +531,8 @@
 
     imgs.forEach(el => {
       el.style.maxWidth = 'calc(100vw - 32px)';
-      el.style.maxHeight = 'calc(100vh - 92px)';
+      // اجعل ارتفاع الصورة أقل من ارتفاع الشاشة لإبقاء الأزرار ظاهرة داخل الحاوية
+      el.style.maxHeight = 'calc(87vh - 80px)';
       el.style.width = 'auto';
       el.style.height = 'auto';
       el.style.objectFit = 'contain';
