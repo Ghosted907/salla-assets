@@ -476,8 +476,8 @@
     const btnNext = document.createElement('button');
     jfStyleButton(btnPrev);
     jfStyleButton(btnNext);
-    btnPrev.textContent = '◀️';
-    btnNext.textContent = '▶';
+    btnPrev.textContent = '⬅️';
+    btnNext.textContent = '➡️';
 
     controls.appendChild(btnPrev);
     controls.appendChild(btnNext);
@@ -503,8 +503,8 @@
       show(index + 1);
     });
 
-    btnPrev.textContent = '▶';
-    btnNext.textContent = '◀';
+    btnPrev.textContent = '⬅️';
+    btnNext.textContent = '➡️';
 
     return true;
   }
