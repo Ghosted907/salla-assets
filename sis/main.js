@@ -386,10 +386,10 @@
     const actions = document.createElement('div');
     actions.className = 'jf-reviews-actions';
     actions.style.marginTop = '12px';
-    actions.style.display = 'flex';
-    actions.style.flexWrap = 'nowrap';
-    actions.style.gap = '8px';
-    actions.style.justifyContent = 'space-between';
+    actions.style.display = 'grid';
+    actions.style.gridTemplateColumns = '1fr 1fr';
+    actions.style.alignItems = 'center';
+    actions.style.columnGap = '16px';
     actions.style.width = '100%';
 
     const whatsappBtn = document.createElement('button');
@@ -414,8 +414,8 @@
 
     actions.appendChild(galleryBtn);
     actions.appendChild(whatsappBtn);
-    galleryBtn.style.marginLeft = '0';
-    whatsappBtn.style.marginLeft = 'auto';
+    galleryBtn.style.justifySelf = 'start';
+    whatsappBtn.style.justifySelf = 'end';
     inner.appendChild(actions);
 
     whatsappBtn.addEventListener('click', () => {
