@@ -294,9 +294,11 @@
       box.setAttribute('role', 'dialog');
       box.setAttribute('aria-modal', 'true');
       box.style.background = '#ffffff';
-      box.style.maxWidth = '90vw';
-      box.style.maxHeight = '90vh';
-      box.style.overflow = 'auto';
+      box.style.width = 'calc(100vw - 8px)';
+      box.style.height = 'calc(100vh - 8px)';
+      box.style.maxWidth = 'calc(100vw - 8px)';
+      box.style.maxHeight = 'calc(100vh - 8px)';
+      box.style.overflow = 'hidden';
       box.style.borderRadius = '16px';
       box.style.padding = '12px';
       box.style.boxSizing = 'border-box';
@@ -496,10 +498,10 @@
     grid.style.display = 'flex';
     grid.style.alignItems = 'center';
     grid.style.justifyContent = 'center';
-    grid.style.width = '320px';
-    grid.style.height = '320px';
-    grid.style.maxWidth = '90vw';
-    grid.style.maxHeight = '70vh';
+    grid.style.width = '100%';
+    grid.style.height = '100%';
+    grid.style.maxWidth = 'calc(100vw - 8px)';
+    grid.style.maxHeight = 'calc(100vh - 8px)';
     grid.style.margin = '0 auto';
     grid.style.overflow = 'hidden';
 
@@ -508,7 +510,5 @@
       el.style.height = '100%';
       el.style.objectFit = 'contain';
     });
-
-    clearInterval(jfGallerySizeInterval);
   }, 250);
 })();
