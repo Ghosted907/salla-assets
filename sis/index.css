@@ -1,89 +1,218 @@
+#mainnav,
+.has-overlay--opacity-option.has-overlay--opacity-0 img {
+  height: auto !important;
+}
+body {
+  background: #ffff !important;
+}
+.top-navbar {
+  background: #937647 !important;
+  color: #fff !important;
+}
+#whatsappButton i,
+.testimonial {
+  color: #fff !important;
+}
+[dir='ltr'] .s-slider-block__title h2,
+[dir='rtl'] .s-slider-block__title h2 {
+  font-size: 1.5rem !important;
+  color: #937647 !important;
+  padding-bottom: 1rem !important;
+}
+#mainnav .container,
+.s-block.s-block--banners.container {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+.main-nav-container i,
+.main-nav-container.fixed-header i {
+  color: #937647 !important;
+}
+.s-slider-block__title-right {
+  flex-grow: 1;
+  text-align: center;
+}
+.main-nav-container.fixed-header img {
+  max-height: 5rem !important;
+}
+.s-block {
+  margin-top: 0 !important;
+  margin-bottom: 1.5rem !important;
+}
+.banner--fixed img {
+  background: 0 0 !important;
+}
+[dir='rtl'] .s-slider-block__title h2 {
+  text-align: right;
+}
+[dir='ltr'] .s-slider-block__title h2 {
+  text-align: left;
+}
+.s-product-card-vertical {
+  flex-direction: column;
+  outline: #937647 solid 1px !important;
+}
+.swiper-wrapper {
+  margin: 30px 0 !important;
+}
+#mainnav .inner,
+.has-overlay--opacity-option.has-overlay--opacity-0,
+.main-nav-container.shadow-default.bg-white.fixed-pinned animated.fixed-header,
+.s-slider-nav-arrow:not(:disabled):hover {
+  background-color: #fff !important;
+}
+.banner-entry,
+.s-block--hero-slider .swiper-slide,
+.s-block--hero-slider .swiper-slide .swiper-lazy:after {
+  background-color: transparent !important;
+}
+#mainnav .inner > *,
+.breadcrumbs li > * {
+  color: #937647 !important;
+}
+.mm-spn.mm-spn--navbar:after {
+  text-align: center !important;
+}
+.s-product-card-content-title a {
+  text-align: center !important;
+  font-size: 1rem !important;
+}
+.main-menu,
+.s-product-card-content-sub {
+  justify-content: center !important;
+}
+.s-product-card-price,
+.s-product-card-sale-price * {
+  font-size: 1rem !important;
+}
+.s-product-card-image img {
+  max-height: 350px !important;
+}
+.s-block.s-block--fixed-banner > .container,
+salla-slider.photos-slider .swiper-slide {
+  width: 100% !important;
+}
+.s-product-card-content-footer button {
+  background: #937647 !important;
+  border: 1px solid #000;
+  border-radius: 15px !important;
+  color: #ffff !important;
+  font-size: 1rem !important;
+  padding: 10px !important;
+}
+@media (min-width: 1280px) {
+  .s-block.s-block--fixed-banner > .container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+#whatsappButton:hover,
+.testimonial {
+  background-color: #000 !important;
+}
+.banner-entry div {
+  background-size: cover !important;
+}
+.s-block.s-block--banners.container,
+section.s-block--fixed-banner .container {
+  padding: 0 !important;
+}
+.navbar-brand img {
+  max-width: 205px !important;
+  max-height: 3rem !important;
+}
+@media screen and (min-width: 640px) {
+  .navbar-brand img {
+    max-width: 205px !important;
+    max-height: 3rem !important;
+  }
+}
+@media screen and (max-width: 450px) {
+  .main-nav-container.fixed-header img,
+  .navbar-brand img {
+    max-height: 3rem !important;
+  }
+}
+header.store-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 999 !important;
+  background-color: #fff;
+}
+@media screen and (max-width: 678px) {
+  .s-block--features__item {
+    padding: 10px !important;
+  }
+}
+.s-block.home-slider {
+  margin-top: -30px !important;
+}
+.q8c6tt-3 ~ div {
+  display: none;
+}
+salla-products-list {
+  padding: 10px !important;
+}
+.carousel-slider .swiper {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+salla-slider .swiper-pagination-bullets.swiper-pagination-horizontal {
+  bottom: -0.25rem !important;
+}
+.swiper-pagination-bullet {
+  background-color: #eee !important;
+}
+.s-block--features__item .feature-icon,
+.swiper-pagination-bullet-active {
+  background-color: #937647 !important;
+}
+@media (min-width: 768px) {
+  .s-slider-block__title {
+    margin-bottom: 0 !important;
+  }
+}
+.s-slider-block__title {
+  margin-bottom: 0 !important;
+}
+@media (min-width: 640px) {
+  .two-row .banner-entry:first-child {
+    grid-column: unset !important;
+    grid-row: unset !important;
+  }
+}
+#whatsappButton {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background-color: #000;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 27px;
+  color: #fff;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.top-navbar .s-search-input::placeholder {
+  color: #fff !important;
+}
+.s-search-modal .s-modal-body {
+  margin-top: 12rem !important;
+}
 
-
-#jeje-testi{
-  position:relative;
-  max-width:1200px;
-  margin:24px auto;
-  border-radius:28px;
-  background:#e9e3d7 url("https://cdn.salla.sa/form-builder/QPcH7cmZLIpvLMfarLiKIVlO8cV4B6NLKbLJJW73.png") center/cover no-repeat;
-  padding:18px 24px 24px;
-  box-shadow:0 6px 20px rgba(0,0,0,.08);
+.footer-list.enhanced_links {
+  column-count: 1 !important;
 }
-#jeje-testi .cap{
-  position:absolute; top:16px; right:24px;
-  font-weight:800; font-size:28px; color:#19191a;
+.store-footer__inner {
+  background-color: #937647 !important;
 }
-#jeje-testi .dash{
-  position:absolute; inset:10px; border-radius:24px;
-  border:4px dashed #2e2e2e; pointer-events:none;
-}
-
-/* قائمة العناصر المتحركة لأعلى */
-#jeje-testi .viewport{
-  position:relative; height:170px; overflow:hidden; margin-top:10px;
-}
-#jeje-testi ul.stream{
-  list-style:none; padding:0; margin:0;
-  display:flex; flex-direction:column; gap:10px;
-  animation:jeje-marquee 22s linear infinite;
-}
-#jeje-testi li.item{
-  background:#fff; border:1px solid #ddd; border-radius:14px;
-  padding:12px 14px; color:var(--color-text);
-  box-shadow:0 2px 8px rgba(0,0,0,.04);
-}
-#jeje-tosti li.item small{color:var(--color-muted)}
-@keyframes jeje-marquee{
-  0%{transform:translateY(0)}
-  100%{transform:translateY(-50%)} /* لا نهائي مع نسخة مكررة */
-}
-
-/* زر + العائم */
-#jeje-fab{
-  position:absolute; left:18px; bottom:18px;
-  width:64px; height:64px; border-radius:50%;
-  background:radial-gradient(circle at 50% 50%, #fff 55%, #ddd 56% 60%, #fff 61% 65%, #ddd 66% 70%, #fff 71%);
-  display:grid; place-items:center; cursor:pointer; z-index:5;
-  box-shadow:0 6px 12px rgba(0,0,0,.15);
-}
-#jeje-fab .plus{
-  width:34px; height:34px; border-radius:50%;
-  background:var(--color-primary); color:#fff; font-weight:900; display:grid; place-items:center;
-}
-
-
-#jeje-menu{
-  position:absolute; left:18px; bottom:94px; z-index:6;
-  background:#fff; border:1px solid #ddd; border-radius:14px; padding:10px;
-  box-shadow:0 10px 24px rgba(0,0,0,.15); width:220px; display:none;
-}
-#jeje-menu button{
-  width:100%; border:0; background:#fff; text-align:right;
-  padding:10px 12px; border-radius:10px; cursor:pointer; color:#19191a;
-}
-#jeje-menu button:hover{background:#f5f5f5}
-
-
-#jeje-form{
-  display:none; gap:8px; margin-top:12px;
-}
-#jeje-form input, #jeje-form textarea{
-  width:100%; border:1px solid #ddd; border-radius:10px; padding:10px; background:#fff; color:#19191a;
-}
-#jeje-form .send{
-  border:0; border-radius:10px; padding:10px 14px; background:var(--color-primary); color:#fff; cursor:pointer;
-}
-
-/* أيقونة يمين */
-#jeje-icon{
-  position:absolute; right:24px; bottom:24px;
-  width:84px; height:84px; border-radius:50%; background:#9c8357;
-  display:grid; place-items:center; color:#fff; font-size:22px; opacity:.95;
-}
-
-/* استجابة */
-@media (max-width:768px){
-  #jeje-testi{padding:14px 16px 20px}
-  #jeje-testi .cap{font-size:20px; right:18px}
-  #jeje-icon{width:64px; height:64px; right:18px; bottom:18px}
+.store-footer__inner > * {
+  color: #fff !important;
+  font-weight: 600 !important;
 }
