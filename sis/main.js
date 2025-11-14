@@ -297,7 +297,7 @@
       box.style.width = 'auto';
       box.style.height = 'auto';
       box.style.maxWidth = 'calc(100vw - 32px)';
-      box.style.maxHeight = 'calc(100vh - 32px)';
+      box.style.maxHeight = '87vh';
       box.style.overflow = 'hidden';
       box.style.borderRadius = '16px';
       box.style.padding = '12px';
