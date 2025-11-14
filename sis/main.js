@@ -248,7 +248,7 @@
     return true;
   }
 
-  const GALLERY_BASE_URL = '/Salla-Assets/sis/pictures/';
+  const GALLERY_BASE_URL = 'https://ghosted907.github.io/salla-assets/sis/pictures/';
   const GALLERY_IMAGES = [
     'IMG-20251114-WA0001.jpg',
     'IMG-20251114-WA0002.jpg',
@@ -380,6 +380,7 @@
 
     actions.appendChild(whatsappBtn);
     actions.appendChild(galleryBtn);
+    galleryBtn.style.marginLeft = 'auto';
     inner.appendChild(actions);
 
     whatsappBtn.addEventListener('click', () => {
@@ -392,7 +393,7 @@
       jfOpenGallery();
     });
 
-    whatsappBtn.textContent = '\u0634\u0627\u0631\u0643\u064a\u0646\u0627 \u0631\u0623\u064a\u0643';
+    whatsappBtn.textContent = '+ \uD83D\uDC8C \u0634\u0627\u0631\u0643\u064a\u0646\u0627 \u0631\u0623\u064a\u0643';
     iconSpan.textContent = '\uD83D\uDCF7';
     textSpan.textContent = '\u0623\u0644\u0628\u0648\u0645 \u0627\u0644\u0635\u0648\u0631';
   }
