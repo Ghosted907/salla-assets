@@ -282,7 +282,7 @@
       overlay.className = 'jf-gallery-overlay';
       overlay.style.position = 'fixed';
       overlay.style.inset = '0';
-      overlay.style.background = '#eddfc8';
+      overlay.style.background = 'rgba(0,0,0,0.7)';
       overlay.style.zIndex = '9999';
       overlay.style.display = 'flex';
       overlay.style.alignItems = 'center';
@@ -293,7 +293,7 @@
       box.className = 'jf-gallery-box';
       box.setAttribute('role', 'dialog');
       box.setAttribute('aria-modal', 'true');
-      box.style.background = '#ffffff';
+      box.style.background = '#eddfc8';
       box.style.width = 'auto';
       box.style.height = 'auto';
       box.style.maxWidth = 'calc(100vw - 32px)';
