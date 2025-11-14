@@ -357,6 +357,7 @@
     actions.style.display = 'flex';
     actions.style.flexWrap = 'wrap';
     actions.style.gap = '8px';
+    actions.style.justifyContent = 'space-between';
 
     const whatsappBtn = document.createElement('button');
     whatsappBtn.className = 'jf-reviews-btn jf-btn-whatsapp';
@@ -378,9 +379,10 @@
     galleryBtn.appendChild(iconSpan);
     galleryBtn.appendChild(textSpan);
 
-    actions.appendChild(whatsappBtn);
     actions.appendChild(galleryBtn);
-    galleryBtn.style.marginLeft = 'auto';
+    actions.appendChild(whatsappBtn);
+    galleryBtn.style.marginLeft = '0';
+    whatsappBtn.style.marginLeft = 'auto';
     inner.appendChild(actions);
 
     whatsappBtn.addEventListener('click', () => {
@@ -411,4 +413,71 @@
   } else {
     tryMount();
   }
+
+  function jfInitGalleryCarousel(){
+    const overlay = document.querySelector('.jf-gallery-overlay');
+    if (!overlay || overlay.dataset.jfReady === '1') return false;
+    const box = overlay.querySelector('.jf-gallery-box');
+    if (!box) return false;
+    const grid = box.querySelector('.jf-gallery-grid');
+    if (!grid) return false;
+    const imgs = Array.from(grid.querySelectorAll('img'));
+    if (!imgs.length) return false;
+
+    overlay.dataset.jfReady = '1';
+
+    let index = 0;
+    imgs.forEach((el, idx) => {
+      el.style.display = idx === index ? 'block' : 'none';
+      el.alt = 'صورة من آراء الجميلات';
+    });
+
+    const controls = document.createElement('div');
+    controls.className = 'jf-gallery-controls';
+    controls.style.marginTop = '12px';
+    controls.style.display = 'flex';
+    controls.style.gap = '12px';
+
+    const btnPrev = document.createElement('button');
+    const btnNext = document.createElement('button');
+    jfStyleButton(btnPrev);
+    jfStyleButton(btnNext);
+    btnPrev.textContent = '←';
+    btnNext.textContent = '→';
+
+    controls.appendChild(btnPrev);
+    controls.appendChild(btnNext);
+    box.appendChild(controls);
+
+    function show(newIndex){
+      if (!imgs.length) return;
+      index = (newIndex + imgs.length) % imgs.length;
+      imgs.forEach((el, idx) => {
+        el.style.display = idx === index ? 'block' : 'none';
+      });
+    }
+
+    btnPrev.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      show(index - 1);
+    });
+
+    btnNext.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      show(index + 1);
+    });
+
+    btnPrev.textContent = '<';
+    btnNext.textContent = '>';
+
+    return true;
+  }
+
+  const jfGalleryInterval = setInterval(() => {
+    if (jfInitGalleryCarousel()){
+      clearInterval(jfGalleryInterval);
+    }
+  }, 250);
 })();
