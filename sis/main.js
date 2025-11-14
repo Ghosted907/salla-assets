@@ -559,12 +559,7 @@ Salla.onReady(function () {
           </a>
         </div>
 
-        <div class="custom-verified-by">
-          <div class="sbc-title">تم فحص المنتج في</div>
-          <a href="https://jejetallow.com/شهادة-تقرير-الفحص/page-1127791441" target="_blank" rel="noopener">
-            <img src="https://www.hasanah.com.sa/wp-content/uploads/2022/01/hasanah-logo.png" alt="Hasanah Logo">
-          </a>
-        </div>
+
       `;
 
       appsIcons.parentNode.insertBefore(el, appsIcons);
