@@ -248,8 +248,160 @@
     return true;
   }
 
+  const GALLERY_BASE_URL = '/Salla-Assets/sis/pictures/';
+  const GALLERY_IMAGES = [
+    'IMG-20251114-WA0001.jpg',
+    'IMG-20251114-WA0002.jpg',
+    'IMG-20251114-WA0003.jpg',
+    'IMG-20251114-WA0004.jpg',
+    'IMG-20251114-WA0005.jpg',
+    'IMG-20251114-WA0006.jpg',
+    'IMG-20251114-WA0007.jpg'
+  ];
+
+  function jfStyleButton(btn){
+    if (!btn) return;
+    btn.type = 'button';
+    btn.style.border = 'none';
+    btn.style.background = '#937647';
+    btn.style.color = '#ffffff';
+    btn.style.borderRadius = '999px';
+    btn.style.padding = '6px 16px';
+    btn.style.fontSize = '0.9rem';
+    btn.style.fontWeight = '600';
+    btn.style.cursor = 'pointer';
+    btn.style.display = 'inline-flex';
+    btn.style.alignItems = 'center';
+    btn.style.gap = '6px';
+  }
+
+  function jfOpenGallery(){
+    let overlay = document.querySelector('.jf-gallery-overlay');
+    if (!overlay){
+      overlay = document.createElement('div');
+      overlay.className = 'jf-gallery-overlay';
+      overlay.style.position = 'fixed';
+      overlay.style.inset = '0';
+      overlay.style.background = 'rgba(0,0,0,0.7)';
+      overlay.style.zIndex = '9999';
+      overlay.style.display = 'flex';
+      overlay.style.alignItems = 'center';
+      overlay.style.justifyContent = 'center';
+      overlay.style.padding = '16px';
+
+      const box = document.createElement('div');
+      box.className = 'jf-gallery-box';
+      box.setAttribute('role', 'dialog');
+      box.setAttribute('aria-modal', 'true');
+      box.style.background = '#ffffff';
+      box.style.maxWidth = '90vw';
+      box.style.maxHeight = '90vh';
+      box.style.overflow = 'auto';
+      box.style.borderRadius = '16px';
+      box.style.padding = '12px';
+      box.style.boxSizing = 'border-box';
+
+      const grid = document.createElement('div');
+      grid.className = 'jf-gallery-grid';
+      grid.style.display = 'grid';
+      grid.style.gridTemplateColumns = 'repeat(auto-fit,minmax(120px,1fr))';
+      grid.style.gap = '8px';
+
+      GALLERY_IMAGES.forEach(name => {
+        const img = document.createElement('img');
+        img.src = GALLERY_BASE_URL + name;
+        img.alt = 'صورة من آراء الجميلات';
+        img.loading = 'lazy';
+        img.style.width = '100%';
+        img.style.height = 'auto';
+        img.style.borderRadius = '12px';
+        img.style.display = 'block';
+        grid.appendChild(img);
+      });
+
+      box.appendChild(grid);
+      overlay.appendChild(box);
+
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay && overlay.parentNode){
+          overlay.parentNode.removeChild(overlay);
+        }
+      });
+
+      document.addEventListener('keydown', function onKey(e){
+        if (e.key === 'Escape'){
+          if (overlay && overlay.parentNode){
+            overlay.parentNode.removeChild(overlay);
+          }
+          document.removeEventListener('keydown', onKey);
+        }
+      });
+
+      document.body.appendChild(overlay);
+
+      const imgs = overlay.querySelectorAll('.jf-gallery-grid img');
+      imgs.forEach(el => {
+        el.alt = '\u0635\u0648\u0631\u0629 \u0645\u0646 \u0622\u0631\u0627\u0621 \u0627\u0644\u062c\u0645\u064a\u0644\u0627\u062a';
+      });
+    }
+  }
+
+  function jfEnsureActions(){
+    const inner = document.querySelector('.jf-reviews-inner');
+    if (!inner) return;
+    if (inner.querySelector('.jf-reviews-actions')) return;
+
+    const actions = document.createElement('div');
+    actions.className = 'jf-reviews-actions';
+    actions.style.marginTop = '12px';
+    actions.style.display = 'flex';
+    actions.style.flexWrap = 'wrap';
+    actions.style.gap = '8px';
+
+    const whatsappBtn = document.createElement('button');
+    whatsappBtn.className = 'jf-reviews-btn jf-btn-whatsapp';
+    whatsappBtn.textContent = 'شاركينا رأيك';
+    jfStyleButton(whatsappBtn);
+
+    const galleryBtn = document.createElement('button');
+    galleryBtn.className = 'jf-reviews-btn jf-btn-gallery';
+    jfStyleButton(galleryBtn);
+
+    const iconSpan = document.createElement('span');
+    iconSpan.textContent = '📷';
+    iconSpan.style.fontSize = '1rem';
+    iconSpan.style.lineHeight = '1';
+
+    const textSpan = document.createElement('span');
+    textSpan.textContent = 'ألبوم الصور';
+
+    galleryBtn.appendChild(iconSpan);
+    galleryBtn.appendChild(textSpan);
+
+    actions.appendChild(whatsappBtn);
+    actions.appendChild(galleryBtn);
+    inner.appendChild(actions);
+
+    whatsappBtn.addEventListener('click', () => {
+      const url = 'https://wa.me/966557042544';
+      window.open(url, '_blank');
+    });
+
+    galleryBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      jfOpenGallery();
+    });
+
+    whatsappBtn.textContent = '\u0634\u0627\u0631\u0643\u064a\u0646\u0627 \u0631\u0623\u064a\u0643';
+    iconSpan.textContent = '\uD83D\uDCF7';
+    textSpan.textContent = '\u0623\u0644\u0628\u0648\u0645 \u0627\u0644\u0635\u0648\u0631';
+  }
+
   function tryMount(t = 0){
-    if (mount()) return;
+    if (mount()){
+      jfEnsureActions();
+      return;
+    }
     if (t < 20) setTimeout(() => tryMount(t + 1), 300);
   }
 
