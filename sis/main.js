@@ -343,6 +343,8 @@
       imgs.forEach(el => {
         el.alt = '\u0635\u0648\u0631\u0629 \u0645\u0646 \u0622\u0631\u0627\u0621 \u0627\u0644\u062c\u0645\u064a\u0644\u0627\u062a';
       });
+
+      jfInitGalleryCarousel();
     }
   }
 
@@ -355,9 +357,10 @@
     actions.className = 'jf-reviews-actions';
     actions.style.marginTop = '12px';
     actions.style.display = 'flex';
-    actions.style.flexWrap = 'wrap';
+    actions.style.flexWrap = 'nowrap';
     actions.style.gap = '8px';
     actions.style.justifyContent = 'space-between';
+    actions.style.width = '100%';
 
     const whatsappBtn = document.createElement('button');
     whatsappBtn.className = 'jf-reviews-btn jf-btn-whatsapp';
@@ -437,6 +440,7 @@
     controls.style.marginTop = '12px';
     controls.style.display = 'flex';
     controls.style.gap = '12px';
+    controls.style.justifyContent = 'center';
 
     const btnPrev = document.createElement('button');
     const btnNext = document.createElement('button');
