@@ -282,7 +282,7 @@
       overlay.className = 'jf-gallery-overlay';
       overlay.style.position = 'fixed';
       overlay.style.inset = '0';
-      overlay.style.background = '#ffffff';
+      overlay.style.background = 'rgba(0,0,0,0.7)';
       overlay.style.zIndex = '9999';
       overlay.style.display = 'flex';
       overlay.style.alignItems = 'center';
