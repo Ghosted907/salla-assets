@@ -294,14 +294,41 @@
       box.setAttribute('role', 'dialog');
       box.setAttribute('aria-modal', 'true');
       box.style.background = '#ffffff';
-      box.style.width = 'calc(100vw - 8px)';
-      box.style.height = 'calc(100vh - 8px)';
-      box.style.maxWidth = 'calc(100vw - 8px)';
-      box.style.maxHeight = 'calc(100vh - 8px)';
+      box.style.width = 'calc(100vw - 32px)';
+      box.style.height = 'calc(100vh - 32px)';
+      box.style.maxWidth = 'calc(100vw - 32px)';
+      box.style.maxHeight = 'calc(100vh - 32px)';
       box.style.overflow = 'hidden';
       box.style.borderRadius = '16px';
       box.style.padding = '12px';
       box.style.boxSizing = 'border-box';
+      box.style.position = 'relative';
+
+      const closeBtn = document.createElement('button');
+      closeBtn.textContent = '×';
+      closeBtn.type = 'button';
+      closeBtn.style.position = 'absolute';
+      closeBtn.style.top = '8px';
+      closeBtn.style.left = '8px';
+      closeBtn.style.width = '32px';
+      closeBtn.style.height = '32px';
+      closeBtn.style.borderRadius = '999px';
+      closeBtn.style.border = 'none';
+      closeBtn.style.background = 'rgba(0,0,0,0.6)';
+      closeBtn.style.color = '#ffffff';
+      closeBtn.style.display = 'flex';
+      closeBtn.style.alignItems = 'center';
+      closeBtn.style.justifyContent = 'center';
+      closeBtn.style.cursor = 'pointer';
+      closeBtn.style.fontSize = '20px';
+
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (overlay && overlay.parentNode){
+          overlay.parentNode.removeChild(overlay);
+        }
+      });
 
       const grid = document.createElement('div');
       grid.className = 'jf-gallery-grid';
@@ -322,6 +349,7 @@
       });
 
       box.appendChild(grid);
+      box.appendChild(closeBtn);
       overlay.appendChild(box);
 
       overlay.addEventListener('click', (e) => {
@@ -499,9 +527,9 @@
     grid.style.alignItems = 'center';
     grid.style.justifyContent = 'center';
     grid.style.width = '100%';
-    grid.style.height = '100%';
-    grid.style.maxWidth = 'calc(100vw - 8px)';
-    grid.style.maxHeight = 'calc(100vh - 8px)';
+    grid.style.height = 'calc(100% - 60px)';
+    grid.style.maxWidth = 'calc(100vw - 32px)';
+    grid.style.maxHeight = 'calc(100vh - 92px)';
     grid.style.margin = '0 auto';
     grid.style.overflow = 'hidden';
 
