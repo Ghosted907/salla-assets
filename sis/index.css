@@ -217,6 +217,28 @@ salla-slider .swiper-pagination-bullets.swiper-pagination-horizontal {
   font-weight: 600 !important;
 }
 
+.sis-trust-strip {
+  background-color: #fdf6ea;
+  color: #2b2115;
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+.sis-trust-strip__item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+@media (max-width: 640px) {
+  .sis-trust-strip {
+    font-size: 0.8rem;
+  }
+}
+
 
 .custom-sbc-column{
   align-items:flex-end !important;
@@ -245,4 +267,64 @@ salla-slider .swiper-pagination-bullets.swiper-pagination-horizontal {
   .custom-sfda img, .custom-sbc-logo img, .custom-verified-by img{
     width:260px !important;
   }
+}
+.sis-hero-focus {
+  position: relative;
+  z-index: 2;
+  max-width: 420px;
+  padding: 16px 20px;
+  background: rgba(253, 246, 234, 0.93);
+  border-radius: 16px;
+  margin: 0 auto;
+  text-align: right;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.sis-hero-focus--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.sis-hero-title {
+  margin: 0 0 6px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2b2115;
+}
+.sis-hero-subtitle {
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  color: #5b4b36;
+}
+.sis-hero-cta {
+  border-radius: 999px;
+  border: none;
+  padding: 8px 18px;
+  background: #937647;
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.s-block.home-slider,
+.s-block--hero-slider {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+}
+
+.jf-gallery-meta{
+  margin-top:6px;
+  font-size:.8rem;
+  text-align:center;
+  color:#2b2115;
+}
+.jf-gallery-shop-btn{
+  margin-top:8px;
+  border-radius:999px;
+  border:none;
+  background:#937647;
+  color:#fff;
+  padding:6px 16px;
+  font-size:.9rem;
+  cursor:pointer;
 }

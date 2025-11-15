@@ -118,6 +118,108 @@
       border-bottom:none;
       padding-bottom:0;
     }
+    .sis-skin-quiz-trigger{
+      margin-top:10px;
+      background:none;
+      border:none;
+      padding:0;
+      font-size:0.85rem;
+      color:#2b2115;
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      cursor:pointer;
+      text-decoration:underline;
+    }
+    .sis-skin-quiz-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.55);
+      z-index:9999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+    }
+    .sis-skin-quiz-card{
+      background:#ffffff;
+      border-radius:16px;
+      max-width:420px;
+      width:100%;
+      box-shadow:0 10px 25px rgba(0,0,0,0.2);
+      box-sizing:border-box;
+      padding:18px 18px 14px;
+      direction:rtl;
+      text-align:right;
+    }
+    .sis-skin-quiz-title{
+      margin:0 0 4px;
+      font-size:1rem;
+      font-weight:600;
+      color:#2b2115;
+    }
+    .sis-skin-quiz-subtitle{
+      margin:0;
+      font-size:0.85rem;
+      color:#5b4b36;
+    }
+    .sis-skin-quiz-steps{
+      margin-top:12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .sis-skin-quiz-question{
+      font-weight:600;
+      font-size:0.9rem;
+      margin-bottom:4px;
+    }
+    .sis-skin-quiz-options{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .sis-skin-quiz-option{
+      border-radius:999px;
+      border:1px solid #937647;
+      padding:4px 10px;
+      font-size:0.85rem;
+      background:#fff;
+      color:#2b2115;
+      cursor:pointer;
+    }
+    .sis-skin-quiz-option--active{
+      background:#937647;
+      color:#fff;
+    }
+    .sis-skin-quiz-actions{
+      margin-top:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .sis-skin-quiz-primary,
+    .sis-skin-quiz-secondary{
+      flex:1;
+      border-radius:999px;
+      padding:6px 12px;
+      font-size:0.9rem;
+      cursor:pointer;
+      border:none;
+    }
+    .sis-skin-quiz-primary{
+      background:#937647;
+      color:#fff;
+    }
+    .sis-skin-quiz-secondary{
+      background:#eee2cf;
+      color:#2b2115;
+    }
+    .sis-skin-quiz-result{
+      margin-top:10px;
+      font-size:0.85rem;
+      color:#2b2115;
+    }
     @keyframes jf-marquee-up{
       0%   { transform: translateY(0); }
       100% { transform: translateY(var(--jf-distance, -50%)); }
@@ -136,7 +238,145 @@
   style.textContent = css;
   document.head.appendChild(style);
 
- 
+  const SKIN_QUIZ_QUESTIONS = [
+    {
+      id: 'type',
+      question: 'ما نوع بشرتك؟',
+      options: [
+        { value: 'dry', label: 'جافة' },
+        { value: 'oily', label: 'دهنية' },
+        { value: 'combo', label: 'مختلطة' },
+        { value: 'normal', label: 'عادية' }
+      ]
+    },
+    {
+      id: 'concern',
+      question: 'أهم شيء تبحثين عنه؟',
+      options: [
+        { value: 'acne', label: 'حبوب / آثار حبوب' },
+        { value: 'texture', label: 'ملمس ناعم' },
+        { value: 'redness', label: 'تهيج / احمرار' }
+      ]
+    },
+    {
+      id: 'time',
+      question: 'متى تستخدمين التالو غالباً؟',
+      options: [
+        { value: 'night', label: 'ليل فقط' },
+        { value: 'day', label: 'نهار فقط' },
+        { value: 'both', label: 'ليل + نهار' }
+      ]
+    }
+  ];
+
+  function computeSkinQuizResult(answers){
+    if (answers.type === 'dry'){
+      return 'بشرتك تميل للجفاف، استخدمي طبقة رقيقة يومياً + طبقة أغنى قبل النوم.';
+    }
+    if (answers.type === 'oily'){
+      return 'استخدمي التالو على بشرة رطبة وبكمية صغيرة فقط في المناطق الجافة.';
+    }
+    if (answers.type === 'combo'){
+      return 'ركزي التالو على الخدود والمناطق الجافة، وتجنبي الـ T-zone قدر الإمكان.';
+    }
+    return 'ابدئي بطبقة خفيفة في الليل، وراقبي استجابة بشرتك لمدة أسبوع ثم عدلي الكمية.';
+  }
+
+  function openSkinQuiz(){
+    if (document.querySelector('.sis-skin-quiz-backdrop')) return;
+
+    const backdrop = document.createElement('div');
+    backdrop.className = 'sis-skin-quiz-backdrop';
+
+    const card = document.createElement('div');
+    card.className = 'sis-skin-quiz-card';
+
+    const title = document.createElement('h3');
+    title.className = 'sis-skin-quiz-title';
+    title.textContent = 'أي روتين يناسب بشرتك مع التالو؟';
+
+    const subtitle = document.createElement('p');
+    subtitle.className = 'sis-skin-quiz-subtitle';
+    subtitle.textContent = 'أجيبي على ٣ أسئلة سريعة لتحصلين على توصية بسيطة.';
+
+    const stepsEl = document.createElement('div');
+    stepsEl.className = 'sis-skin-quiz-steps';
+
+    const answers = {};
+
+    SKIN_QUIZ_QUESTIONS.forEach(q => {
+      const block = document.createElement('div');
+
+      const qEl = document.createElement('div');
+      qEl.className = 'sis-skin-quiz-question';
+      qEl.textContent = q.question;
+
+      const optsEl = document.createElement('div');
+      optsEl.className = 'sis-skin-quiz-options';
+
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'sis-skin-quiz-option';
+        btn.textContent = opt.label;
+        btn.addEventListener('click', () => {
+          answers[q.id] = opt.value;
+          Array.from(optsEl.querySelectorAll('.sis-skin-quiz-option')).forEach(b => {
+            b.classList.toggle('sis-skin-quiz-option--active', b === btn);
+          });
+        });
+        optsEl.appendChild(btn);
+      });
+
+      block.appendChild(qEl);
+      block.appendChild(optsEl);
+      stepsEl.appendChild(block);
+    });
+
+    const actions = document.createElement('div');
+    actions.className = 'sis-skin-quiz-actions';
+
+    const btnClose = document.createElement('button');
+    btnClose.type = 'button';
+    btnClose.className = 'sis-skin-quiz-secondary';
+    btnClose.textContent = 'إغلاق';
+    btnClose.addEventListener('click', () => {
+      if (backdrop.parentNode) backdrop.parentNode.removeChild(backdrop);
+    });
+
+    const btnResult = document.createElement('button');
+    btnResult.type = 'button';
+    btnResult.className = 'sis-skin-quiz-primary';
+    btnResult.textContent = 'عرض النتيجة';
+
+    const resultEl = document.createElement('div');
+    resultEl.className = 'sis-skin-quiz-result';
+
+    btnResult.addEventListener('click', () => {
+      const text = computeSkinQuizResult(answers);
+      resultEl.textContent = text;
+    });
+
+    actions.appendChild(btnClose);
+    actions.appendChild(btnResult);
+
+    card.appendChild(title);
+    card.appendChild(subtitle);
+    card.appendChild(stepsEl);
+    card.appendChild(actions);
+    card.appendChild(resultEl);
+
+    backdrop.appendChild(card);
+
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop && backdrop.parentNode){
+        backdrop.parentNode.removeChild(backdrop);
+      }
+    });
+
+    document.body.appendChild(backdrop);
+  }
+
   function initTicker(track){
     if (!track) return;
     if (track.dataset.ready === '1') return;
@@ -254,9 +494,16 @@
     'IMG-20251114-WA0002.jpg',
     'IMG-20251114-WA0003.jpg',
     'IMG-20251114-WA0004.jpg',
-    'IMG-20251114-WA0001.jpg',
     'IMG-20251114-WA0006.jpg',
     'IMG-20251114-WA0007.jpg'
+  ];
+  const GALLERY_CAPTIONS = [
+    'قبل / بعد الاستخدام',
+    'ملمس التالو على البشرة',
+    'مناسب للأطفال',
+    'نتيجة بعد ٧ أيام',
+    'تفاصيل المنتج',
+    'روتين الليل والنهار'
   ];
 
   function jfStyleButton(btn){
@@ -565,4 +812,35 @@ Salla.onReady(function () {
       appsIcons.parentNode.insertBefore(el, appsIcons);
     }
   }
+
+  if (!document.querySelector('.sis-trust-strip')) {
+    const header = document.querySelector('.top-navbar') || document.querySelector('header.store-header');
+    if (header && header.parentNode) {
+      const bar = document.createElement('div');
+      bar.className = 'sis-trust-strip';
+      bar.innerHTML = `
+        <div class="sis-trust-strip__item">🧴 <span>100% ????? ????? ?????</span></div>
+        <div class="sis-trust-strip__item">✅ <span>???? ??? ???</span></div>
+        <div class="sis-trust-strip__item">🚚 <span>??? ??? ????? ?? ??? ????</span></div>
+      `;
+      header.parentNode.insertBefore(bar, header.nextSibling);
+    }
+  }
+
+  (function attachSkinQuizTrigger(){
+    const box = document.querySelector('.jf-reviews-inner');
+    if (!box) return;
+    if (box.querySelector('.sis-skin-quiz-trigger')) return;
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'sis-skin-quiz-trigger';
+    btn.innerHTML = '<span>🔎 ما هو روتين الترطيب المناسب لبشرتك؟</span>';
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openSkinQuiz();
+    });
+
+    box.appendChild(btn);
+  })();
 });
