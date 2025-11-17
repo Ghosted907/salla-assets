@@ -375,6 +375,10 @@
     });
 
     document.body.appendChild(backdrop);
+
+    if (typeof window !== 'undefined'){
+      window.sisOpenSkinQuiz = openSkinQuiz;
+    }
   }
 
   function initTicker(track){
@@ -838,7 +842,9 @@ Salla.onReady(function () {
     btn.innerHTML = '<span>🔎 ما هو روتين الترطيب المناسب لبشرتك؟</span>';
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      openSkinQuiz();
+      if (window.sisOpenSkinQuiz){
+        window.sisOpenSkinQuiz();
+      }
     });
 
     box.appendChild(btn);
