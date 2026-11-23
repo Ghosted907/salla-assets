@@ -29,3 +29,31 @@
     width:260px !important;
   }
 }
+
+/* Jeje original cream production notice */
+body::before {
+  content: "تنويه: لكثرة الإستفسارات عن موعد توفر منتج \"كريم الشحم الأصلي\"  تم اتاحة طلبه لكمية محدوده وهو قيد الإنتاج حاليا وقد يتسبب ذالك في تأخير الطلب لمدة اسبوع تقريبا شاكره لكم تفهمكم ❤️";
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  flex: none;
+  position: relative;
+  padding: 12px 24px;
+  background: #6d5021;
+  color: #ffffff;
+  border-bottom: 1px solid #937647;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.9;
+  text-align: center;
+  direction: rtl;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 640px) {
+  body::before {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+}
