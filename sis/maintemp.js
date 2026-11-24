@@ -404,6 +404,16 @@
 
   
   function mount(){
+    if (document.body.classList.contains('index')) {
+      const tikTokSection = document.getElementById('jf-tiktok-gallery');
+      if (!tikTokSection) return false;
+      const reviewsBox = document.querySelector('.jf-reviews-container') || buildBox();
+      if (tikTokSection.nextElementSibling !== reviewsBox) {
+        tikTokSection.insertAdjacentElement('afterend', reviewsBox);
+      }
+      return true;
+    }
+
     const targetSection = Array.from(
       document.querySelectorAll('section.s-block.s-block--fixed-banner.wide-placeholder')
     ).find(sec => {
