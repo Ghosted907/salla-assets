@@ -1,3 +1,205 @@
+/* Selected TikTok videos: mobile-first, homepage only. */
+(() => {
+  const VIDEOS = [
+    { id: '7524202200965385480', account: 'jejebeeftallow', title: '?????? ??????' },
+    { id: '7568388454351097108', account: 'jeje.beeftallow', title: '???? ????' },
+    { id: '7532539034170608903', account: 'jejebeeftallow', title: '?????? ????' },
+    { id: '7523385446366252296', account: 'jejebeeftallow', title: '????? ???????' }
+  ];
+  const COVER_BASE = 'https://ghosted907.github.io/salla-assets/sis/tiktok/';
+  const css = `
+    #jf-tiktok-gallery, #jf-tiktok-gallery *, #jf-tiktok-dialog, #jf-tiktok-dialog * { box-sizing: border-box; }
+    #jf-tiktok-gallery { width: calc(100% - 24px); max-width: 1180px; min-width: 0; margin: 28px auto; padding: 24px 0 16px; background: #faf6ee; border: 1px solid #e9ddca; border-radius: 24px; color: #382b1c; direction: rtl; }
+    .jf-tiktok-heading { padding: 0 20px 16px; }
+    .jf-tiktok-eyebrow { margin: 0 0 6px; color: #937647; font-size: 12px; font-weight: 700; letter-spacing: 1px; }
+    #jf-tiktok-title { margin: 0; font-size: 22px; font-weight: 700; line-height: 1.6; color: #6d5021; }
+    .jf-tiktok-subtitle { margin: 6px 0 0; font-size: 13px; line-height: 1.8; }
+    .jf-tiktok-track { display: flex; gap: 14px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; padding: 4px 16px 14px; scrollbar-width: none; }
+    .jf-tiktok-track::-webkit-scrollbar { display: none; }
+    #jf-tiktok-gallery .jf-tiktok-card { appearance: none; flex: 0 0 72%; max-width: 264px; min-width: 0; padding: 0; overflow: hidden; border: 1px solid #e3d5bf; border-radius: 18px; background: #fff; color: inherit; cursor: pointer; font: inherit; text-align: right; scroll-snap-align: start; scroll-snap-stop: always; }
+    .jf-tiktok-cover { position: relative; display: block; width: 100%; aspect-ratio: 9 / 16; overflow: hidden; background: #eddfc8; }
+    .jf-tiktok-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .jf-tiktok-cover::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.18), transparent 35%, rgba(0,0,0,.22)); }
+    .jf-tiktok-badge { position: absolute; top: 12px; right: 12px; z-index: 1; border-radius: 99px; padding: 5px 10px; background: rgba(0,0,0,.58); color: #fff; font-size: 11px; line-height: 1.4; }
+    .jf-tiktok-play { position: absolute; top: 50%; left: 50%; z-index: 1; display: grid; place-items: center; width: 58px; height: 58px; transform: translate(-50%,-50%); border: 1px solid rgba(255,255,255,.8); border-radius: 50%; background: rgba(0,0,0,.5); color: #fff; font-size: 24px; padding-left: 3px; }
+    .jf-tiktok-caption { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 12px; font-size: 14px; font-weight: 700; }
+    .jf-tiktok-caption small { color: #937647; font-size: 11px; white-space: nowrap; font-weight: 600; }
+    .jf-tiktok-navigation { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 0 16px; }
+    #jf-tiktok-gallery .jf-tiktok-arrow, #jf-tiktok-dialog button { display: inline-grid; place-items: center; width: 44px; min-height: 44px; padding: 0; border: 1px solid #dfcfb4; border-radius: 50%; background: #fff; color: #6d5021; font: inherit; font-size: 28px; line-height: 1; cursor: pointer; }
+    #jf-tiktok-gallery button:focus-visible, #jf-tiktok-dialog button:focus-visible, #jf-tiktok-dialog a:focus-visible { outline: 3px solid #b99c6d; outline-offset: 3px; }
+    #jf-tiktok-gallery button:disabled, #jf-tiktok-dialog button:disabled { opacity: .35; cursor: default; }
+    .jf-tiktok-dots { display: flex; align-items: center; gap: 0; }
+    #jf-tiktok-gallery .jf-tiktok-dot { display: grid; place-items: center; width: 32px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .jf-tiktok-dot::after { content: ''; width: 7px; height: 7px; border-radius: 99px; background: #d9c9ae; transition: width .15s ease; }
+    .jf-tiktok-dot[aria-current='true']::after { width: 20px; background: #937647; }
+    #jf-tiktok-dialog { width: min(420px, calc(100vw - 16px)); max-width: none; max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px); margin: auto; padding: 12px; overflow: hidden; border: 0; border-radius: 20px; background: #1d1914; color: #fff; direction: rtl; font-family: inherit; }
+    #jf-tiktok-dialog[open] { display: flex; flex-direction: column; gap: 10px; }
+    #jf-tiktok-dialog::backdrop { background: rgba(0,0,0,.8); }
+    .jf-tiktok-modal-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    #jf-tiktok-dialog-title { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.6; color: #fff; }
+    #jf-tiktok-dialog button { flex: 0 0 44px; border-color: #5e5140; background: #30281e; color: #fff; }
+    .jf-tiktok-player { position: relative; width: min(100%, calc((100vh - 180px) * .5625)); width: min(100%, calc((100dvh - 180px) * .5625)); aspect-ratio: 9 / 16; margin: 0 auto; background: #000; overflow: hidden; border-radius: 10px; }
+    .jf-tiktok-player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .jf-tiktok-modal-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    #jf-tiktok-dialog a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 10px; color: #fff; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
+    .jf-tiktok-counter { font-size: 12px; color: #e1cfaf; white-space: nowrap; }
+    body.jf-tiktok-open { overflow: hidden; }
+    @media (min-width: 900px) { #jf-tiktok-gallery { padding-top: 28px; } .jf-tiktok-heading { padding-inline: 24px; } #jf-tiktok-gallery .jf-tiktok-card { flex-basis: calc((100% - 42px) / 4); max-width: none; } .jf-tiktok-navigation { display: none; } }
+    @media (max-width: 359px) { #jf-tiktok-title { font-size: 20px; } .jf-tiktok-caption { flex-direction: column; align-items: flex-start; gap: 4px; } }
+    @media (prefers-reduced-motion: reduce) { .jf-tiktok-dot::after { transition: none; } }
+  `;
+
+  function jfMountTikTok() {
+    if (!document.body.classList.contains('index')) return true;
+    if (document.getElementById('jf-tiktok-gallery')) return true;
+    const main = document.querySelector('main');
+    if (!main) return false;
+
+    const style = document.createElement('style');
+    style.id = 'jf-tiktok-gallery-style';
+    style.textContent = css;
+    document.head.appendChild(style);
+
+    const section = document.createElement('section');
+    section.id = 'jf-tiktok-gallery';
+    section.setAttribute('aria-labelledby', 'jf-tiktok-title');
+    section.innerHTML = `
+      <div class="jf-tiktok-heading">
+        <p class="jf-tiktok-eyebrow" lang="en">JEJE � TIKTOK</p>
+        <h2 id="jf-tiktok-title">???? ??? ??? ???</h2>
+        <p class="jf-tiktok-subtitle">????? ???????? ?? ???? ?????? ??????? ??????</p>
+      </div>
+      <div class="jf-tiktok-track" role="group" aria-label="????? ???? ??? ??? ???">
+        ${VIDEOS.map((video, index) => `
+          <button type="button" class="jf-tiktok-card" data-video="${index}" aria-label="???? ???? ${video.title}" aria-haspopup="dialog">
+            <span class="jf-tiktok-cover">
+              <img src="${COVER_BASE}${video.id}.jpg" width="360" height="640" alt="" loading="lazy" decoding="async">
+              <span class="jf-tiktok-badge" lang="en">TikTok</span>
+              <span class="jf-tiktok-play" aria-hidden="true">?</span>
+            </span>
+            <span class="jf-tiktok-caption"><span>${video.title}</span><small>????? ??????</small></span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="jf-tiktok-navigation">
+        <button type="button" class="jf-tiktok-arrow" data-rail-prev aria-label="?????? ??????">></button>
+        <div class="jf-tiktok-dots">
+          ${VIDEOS.map((video, index) => `<button type="button" class="jf-tiktok-dot" data-slide="${index}" aria-label="????? ???? ${video.title}" aria-current="${index === 0}"></button>`).join('')}
+        </div>
+        <button type="button" class="jf-tiktok-arrow" data-rail-next aria-label="?????? ??????"><</button>
+      </div>
+    `;
+    const anchor = main.querySelector('[data-testid="store-home-fixed-products"]');
+    if (anchor) anchor.insertAdjacentElement('afterend', section);
+    else main.appendChild(section);
+
+    const track = section.querySelector('.jf-tiktok-track');
+    const cards = Array.from(section.querySelectorAll('.jf-tiktok-card'));
+    const dots = Array.from(section.querySelectorAll('.jf-tiktok-dot'));
+    const railPrev = section.querySelector('[data-rail-prev]');
+    const railNext = section.querySelector('[data-rail-next]');
+    let railIndex = 0;
+    let scrollFrame = 0;
+
+    function jfUpdateRail() {
+      const edge = track.getBoundingClientRect().right - 16;
+      let closest = Infinity;
+      cards.forEach((card, index) => {
+        const distance = Math.abs(card.getBoundingClientRect().right - edge);
+        if (distance < closest) { closest = distance; railIndex = index; }
+      });
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      if (maxScroll > 1 && Math.abs(track.scrollLeft) >= maxScroll - 2) railIndex = cards.length - 1;
+      dots.forEach((dot, index) => dot.setAttribute('aria-current', String(index === railIndex)));
+      railPrev.disabled = railIndex === 0;
+      railNext.disabled = railIndex === cards.length - 1;
+      scrollFrame = 0;
+    }
+
+    function jfGoToCard(index) {
+      const card = cards[Math.max(0, Math.min(index, cards.length - 1))];
+      card.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest', inline: 'start' });
+    }
+    track.addEventListener('scroll', () => {
+      if (!scrollFrame) scrollFrame = requestAnimationFrame(jfUpdateRail);
+    }, { passive: true });
+    dots.forEach((dot, index) => dot.addEventListener('click', () => jfGoToCard(index)));
+    railPrev.addEventListener('click', () => jfGoToCard(railIndex - 1));
+    railNext.addEventListener('click', () => jfGoToCard(railIndex + 1));
+    window.addEventListener('resize', jfUpdateRail);
+    jfUpdateRail();
+
+    let dialog;
+    let activeIndex = 0;
+    let opener;
+
+    function jfShowVideo(index) {
+      activeIndex = index;
+      const video = VIDEOS[index];
+      dialog.querySelector('#jf-tiktok-dialog-title').textContent = video.title;
+      dialog.querySelector('.jf-tiktok-counter').textContent = `${(index + 1).toLocaleString('ar-SA')} / ${VIDEOS.length.toLocaleString('ar-SA')}`;
+      dialog.querySelector('a').href = `https://www.tiktok.com/@${video.account}/video/${video.id}`;
+      dialog.querySelector('[data-video-prev]').disabled = index === 0;
+      dialog.querySelector('[data-video-next]').disabled = index === VIDEOS.length - 1;
+      const frame = document.createElement('iframe');
+      frame.title = `???? ${video.title} ??? ??? ???`;
+      frame.src = `https://www.tiktok.com/player/v1/${video.id}?autoplay=1&controls=1&rel=0&music_info=0&description=0`;
+      frame.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture';
+      frame.allowFullscreen = true;
+      dialog.querySelector('.jf-tiktok-player').replaceChildren(frame);
+    }
+
+    function jfOpenVideo(index, button) {
+      if (!dialog) {
+        dialog = document.createElement('dialog');
+        dialog.id = 'jf-tiktok-dialog';
+        dialog.setAttribute('aria-labelledby', 'jf-tiktok-dialog-title');
+        dialog.innerHTML = `
+          <div class="jf-tiktok-modal-header">
+            <h2 id="jf-tiktok-dialog-title"></h2>
+            <button type="button" data-video-close aria-label="????? ??????" autofocus>x</button>
+          </div>
+          <div class="jf-tiktok-player"></div>
+          <div class="jf-tiktok-modal-footer">
+            <button type="button" data-video-prev aria-label="????? ?????? ??????">></button>
+            <span class="jf-tiktok-counter" aria-live="polite"></span>
+            <a target="_blank" rel="noopener noreferrer">?????? ?? ??? ??? ?</a>
+            <button type="button" data-video-next aria-label="????? ?????? ??????"><</button>
+          </div>
+        `;
+        document.body.appendChild(dialog);
+        dialog.querySelector('[data-video-close]').addEventListener('click', () => dialog.close());
+        dialog.querySelector('[data-video-prev]').addEventListener('click', () => jfShowVideo(activeIndex - 1));
+        dialog.querySelector('[data-video-next]').addEventListener('click', () => jfShowVideo(activeIndex + 1));
+        dialog.addEventListener('close', () => {
+          dialog.querySelector('.jf-tiktok-player').replaceChildren();
+          document.body.classList.remove('jf-tiktok-open');
+          if (opener) opener.focus({ preventScroll: true });
+        });
+        dialog.addEventListener('click', event => {
+          if (event.target !== dialog) return;
+          const bounds = dialog.getBoundingClientRect();
+          if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
+        });
+      }
+      opener = button;
+      jfShowVideo(index);
+      dialog.showModal();
+      document.body.classList.add('jf-tiktok-open');
+    }
+
+    cards.forEach((card, index) => card.addEventListener('click', () => jfOpenVideo(index, card)));
+    return true;
+  }
+
+  function jfTryTikTok(attempt = 0) {
+    if (!jfMountTikTok() && attempt < 20) setTimeout(() => jfTryTikTok(attempt + 1), 300);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => jfTryTikTok(), { once: true });
+  else jfTryTikTok();
+})();
+
+
 (() => {
 
   const REVIEWS_TEXT = [
