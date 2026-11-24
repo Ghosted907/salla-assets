@@ -1,10 +1,10 @@
 /* Selected TikTok videos: mobile-first, homepage only. */
 (() => {
   const VIDEOS = [
-    { id: '7524202200965385480', account: 'jejebeeftallow', title: '?????? ??????' },
-    { id: '7568388454351097108', account: 'jeje.beeftallow', title: '???? ????' },
-    { id: '7532539034170608903', account: 'jejebeeftallow', title: '?????? ????' },
-    { id: '7523385446366252296', account: 'jejebeeftallow', title: '????? ???????' }
+    { id: '7524202200965385480', account: 'jejebeeftallow', title: 'الكريم الأصلي' },
+    { id: '7568388454351097108', account: 'jeje.beeftallow', title: 'كريم ألما' },
+    { id: '7532539034170608903', account: 'jejebeeftallow', title: 'مجموعة جيجي' },
+    { id: '7523385446366252296', account: 'jejebeeftallow', title: 'روتين العناية' }
   ];
   const COVER_BASE = 'https://ghosted907.github.io/salla-assets/sis/tiktok/';
   const css = `
@@ -65,28 +65,28 @@
     section.setAttribute('aria-labelledby', 'jf-tiktok-title');
     section.innerHTML = `
       <div class="jf-tiktok-heading">
-        <p class="jf-tiktok-eyebrow" lang="en">JEJE � TIKTOK</p>
-        <h2 id="jf-tiktok-title">???? ??? ??? ???</h2>
-        <p class="jf-tiktok-subtitle">????? ???????? ?? ???? ?????? ??????? ??????</p>
+        <p class="jf-tiktok-eyebrow" lang="en">JEJE · TIKTOK</p>
+        <h2 id="jf-tiktok-title">جيجي على تيك توك</h2>
+        <p class="jf-tiktok-subtitle">شاهدي منتجاتنا عن قرب، واسحبي لاكتشاف المزيد</p>
       </div>
-      <div class="jf-tiktok-track" role="group" aria-label="????? ???? ??? ??? ???">
+      <div class="jf-tiktok-track" role="group" aria-label="مقاطع جيجي على تيك توك">
         ${VIDEOS.map((video, index) => `
-          <button type="button" class="jf-tiktok-card" data-video="${index}" aria-label="???? ???? ${video.title}" aria-haspopup="dialog">
+          <button type="button" class="jf-tiktok-card" data-video="${index}" aria-label="شغلي مقطع ${video.title}" aria-haspopup="dialog">
             <span class="jf-tiktok-cover">
               <img src="${COVER_BASE}${video.id}.jpg" width="360" height="640" alt="" loading="lazy" decoding="async">
               <span class="jf-tiktok-badge" lang="en">TikTok</span>
-              <span class="jf-tiktok-play" aria-hidden="true">?</span>
+              <span class="jf-tiktok-play" aria-hidden="true">▶</span>
             </span>
-            <span class="jf-tiktok-caption"><span>${video.title}</span><small>????? ??????</small></span>
+            <span class="jf-tiktok-caption"><span>${video.title}</span><small>شاهدي المقطع</small></span>
           </button>
         `).join('')}
       </div>
       <div class="jf-tiktok-navigation">
-        <button type="button" class="jf-tiktok-arrow" data-rail-prev aria-label="?????? ??????">></button>
+        <button type="button" class="jf-tiktok-arrow" data-rail-prev aria-label="المقطع السابق">›</button>
         <div class="jf-tiktok-dots">
-          ${VIDEOS.map((video, index) => `<button type="button" class="jf-tiktok-dot" data-slide="${index}" aria-label="????? ???? ${video.title}" aria-current="${index === 0}"></button>`).join('')}
+          ${VIDEOS.map((video, index) => `<button type="button" class="jf-tiktok-dot" data-slide="${index}" aria-label="اعرضي مقطع ${video.title}" aria-current="${index === 0}"></button>`).join('')}
         </div>
-        <button type="button" class="jf-tiktok-arrow" data-rail-next aria-label="?????? ??????"><</button>
+        <button type="button" class="jf-tiktok-arrow" data-rail-next aria-label="المقطع التالي">‹</button>
       </div>
     `;
     const anchor = main.querySelector('[data-testid="store-home-fixed-products"]');
@@ -142,7 +142,7 @@
       dialog.querySelector('[data-video-prev]').disabled = index === 0;
       dialog.querySelector('[data-video-next]').disabled = index === VIDEOS.length - 1;
       const frame = document.createElement('iframe');
-      frame.title = `???? ${video.title} ??? ??? ???`;
+      frame.title = `مقطع ${video.title} على تيك توك`;
       frame.src = `https://www.tiktok.com/player/v1/${video.id}?autoplay=1&controls=1&rel=0&music_info=0&description=0`;
       frame.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture';
       frame.allowFullscreen = true;
@@ -157,14 +157,14 @@
         dialog.innerHTML = `
           <div class="jf-tiktok-modal-header">
             <h2 id="jf-tiktok-dialog-title"></h2>
-            <button type="button" data-video-close aria-label="????? ??????" autofocus>x</button>
+            <button type="button" data-video-close aria-label="إغلاق المقطع" autofocus>×</button>
           </div>
           <div class="jf-tiktok-player"></div>
           <div class="jf-tiktok-modal-footer">
-            <button type="button" data-video-prev aria-label="????? ?????? ??????">></button>
+            <button type="button" data-video-prev aria-label="تشغيل المقطع السابق">›</button>
             <span class="jf-tiktok-counter" aria-live="polite"></span>
-            <a target="_blank" rel="noopener noreferrer">?????? ?? ??? ??? ?</a>
-            <button type="button" data-video-next aria-label="????? ?????? ??????"><</button>
+            <a target="_blank" rel="noopener noreferrer">افتحيه في تيك توك ↗</a>
+            <button type="button" data-video-next aria-label="تشغيل المقطع التالي">‹</button>
           </div>
         `;
         document.body.appendChild(dialog);
