@@ -5,8 +5,8 @@
     { id: '7568388454351097108', account: 'jeje.beeftallow', title: 'كريم ألما' },
     { id: '7532539034170608903', account: 'jejebeeftallow', title: 'مجموعة جيجي' },
     { id: '7523385446366252296', account: 'jejebeeftallow', title: 'روتين العناية' },
-    { id: '7710651350643789063', account: 'mayooskh', title: 'صديقة المتجر ميوس ♥️', cover: 'mayoos-1.svg' },
-    { id: '7711113098895084808', account: 'mayooskh', title: 'صديقة المتجر ميوس ♥️', cover: 'mayoos-2.svg' }
+    { id: '7710651350643789063', account: 'mayooskh', title: 'صديقة المتجر ميوس ♥️', nativePoster: true },
+    { id: '7711113098895084808', account: 'mayooskh', title: 'صديقة المتجر ميوس ♥️', nativePoster: true }
   ];
   const COVER_BASE = 'https://ghosted907.github.io/salla-assets/sis/tiktok/';
   const css = `
@@ -21,6 +21,7 @@
     #jf-tiktok-gallery .jf-tiktok-card { appearance: none; flex: 0 0 72%; max-width: 264px; min-width: 0; padding: 0; overflow: hidden; border: 1px solid #e3d5bf; border-radius: 18px; background: #fff; color: inherit; cursor: pointer; font: inherit; text-align: right; scroll-snap-align: start; scroll-snap-stop: always; }
     .jf-tiktok-cover { position: relative; display: block; width: 100%; aspect-ratio: 9 / 16; overflow: hidden; background: #eddfc8; }
     .jf-tiktok-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .jf-tiktok-cover .jf-tiktok-poster { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #eddfc8; pointer-events: none; }
     .jf-tiktok-cover::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.18), transparent 35%, rgba(0,0,0,.22)); }
     .jf-tiktok-badge { position: absolute; top: 12px; right: 12px; z-index: 1; border-radius: 99px; padding: 5px 10px; background: rgba(0,0,0,.58); color: #fff; font-size: 11px; line-height: 1.4; }
     .jf-tiktok-play { position: absolute; top: 50%; left: 50%; z-index: 1; display: grid; place-items: center; width: 58px; height: 58px; transform: translate(-50%,-50%); border: 1px solid rgba(255,255,255,.8); border-radius: 50%; background: rgba(0,0,0,.5); color: #fff; font-size: 24px; padding-left: 3px; }
@@ -76,7 +77,9 @@
         ${VIDEOS.map((video, index) => `
           <button type="button" class="jf-tiktok-card" data-video="${index}" aria-label="شغلي مقطع ${video.title}" aria-haspopup="dialog">
             <span class="jf-tiktok-cover">
-              <img src="${COVER_BASE}${video.cover || video.id + '.jpg'}" width="360" height="640" alt="" loading="lazy" decoding="async">
+              <img src="${video.nativePoster
+                ? `<iframe class="jf-tiktok-poster" title="معاينة ${video.title}" src="https://www.tiktok.com/player/v1/${video.id}?autoplay=0&controls=0&music_info=0&description=0&rel=0&timestamp=0&fullscreen_button=0" loading="lazy" aria-hidden="true" tabindex="-1"></iframe>`
+                : `<img src="${COVER_BASE}${video.id}.jpg" width="360" height="640" alt="" loading="lazy" decoding="async">`}" width="360" height="640" alt="" loading="lazy" decoding="async">
               <span class="jf-tiktok-badge" lang="en">TikTok</span>
               <span class="jf-tiktok-play" aria-hidden="true">▶</span>
             </span>
