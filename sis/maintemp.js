@@ -77,9 +77,9 @@
         ${VIDEOS.map((video, index) => `
           <button type="button" class="jf-tiktok-card" data-video="${index}" aria-label="شغلي مقطع ${video.title}" aria-haspopup="dialog">
             <span class="jf-tiktok-cover">
-              <img src="${video.nativePoster
+              ${video.nativePoster
                 ? `<iframe class="jf-tiktok-poster" title="معاينة ${video.title}" src="https://www.tiktok.com/player/v1/${video.id}?autoplay=0&controls=0&music_info=0&description=0&rel=0&timestamp=0&fullscreen_button=0" loading="lazy" aria-hidden="true" tabindex="-1"></iframe>`
-                : `<img src="${COVER_BASE}${video.id}.jpg" width="360" height="640" alt="" loading="lazy" decoding="async">`}" width="360" height="640" alt="" loading="lazy" decoding="async">
+                : `<img src="${COVER_BASE}${video.id}.jpg" width="360" height="640" alt="" loading="lazy" decoding="async">`}
               <span class="jf-tiktok-badge" lang="en">TikTok</span>
               <span class="jf-tiktok-play" aria-hidden="true">▶</span>
             </span>
