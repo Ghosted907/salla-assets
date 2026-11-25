@@ -4,7 +4,9 @@
     { id: '7524202200965385480', account: 'jejebeeftallow', title: 'الكريم الأصلي' },
     { id: '7568388454351097108', account: 'jeje.beeftallow', title: 'كريم ألما' },
     { id: '7532539034170608903', account: 'jejebeeftallow', title: 'مجموعة جيجي' },
-    { id: '7523385446366252296', account: 'jejebeeftallow', title: 'روتين العناية' }
+    { id: '7523385446366252296', account: 'jejebeeftallow', title: 'روتين العناية' },
+    { id: '7710651350643789063', account: 'mayooskh', title: 'صديقة المتجر ميوس ♥️', cover: 'mayoos-1.svg' },
+    { id: '7711113098895084808', account: 'mayooskh', title: 'صديقة المتجر ميوس ♥️', cover: 'mayoos-2.svg' }
   ];
   const COVER_BASE = 'https://ghosted907.github.io/salla-assets/sis/tiktok/';
   const css = `
@@ -24,12 +26,12 @@
     .jf-tiktok-play { position: absolute; top: 50%; left: 50%; z-index: 1; display: grid; place-items: center; width: 58px; height: 58px; transform: translate(-50%,-50%); border: 1px solid rgba(255,255,255,.8); border-radius: 50%; background: rgba(0,0,0,.5); color: #fff; font-size: 24px; padding-left: 3px; }
     .jf-tiktok-caption { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 12px; font-size: 14px; font-weight: 700; }
     .jf-tiktok-caption small { color: #937647; font-size: 11px; white-space: nowrap; font-weight: 600; }
-    .jf-tiktok-navigation { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 0 16px; }
+    .jf-tiktok-navigation { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; }
     #jf-tiktok-gallery .jf-tiktok-arrow, #jf-tiktok-dialog button { display: inline-grid; place-items: center; width: 44px; min-height: 44px; padding: 0; border: 1px solid #dfcfb4; border-radius: 50%; background: #fff; color: #6d5021; font: inherit; font-size: 28px; line-height: 1; cursor: pointer; }
     #jf-tiktok-gallery button:focus-visible, #jf-tiktok-dialog button:focus-visible, #jf-tiktok-dialog a:focus-visible { outline: 3px solid #b99c6d; outline-offset: 3px; }
     #jf-tiktok-gallery button:disabled, #jf-tiktok-dialog button:disabled { opacity: .35; cursor: default; }
     .jf-tiktok-dots { display: flex; align-items: center; gap: 0; }
-    #jf-tiktok-gallery .jf-tiktok-dot { display: grid; place-items: center; width: 32px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    #jf-tiktok-gallery .jf-tiktok-dot { display: grid; place-items: center; width: 24px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; }
     .jf-tiktok-dot::after { content: ''; width: 7px; height: 7px; border-radius: 99px; background: #d9c9ae; transition: width .15s ease; }
     .jf-tiktok-dot[aria-current='true']::after { width: 20px; background: #937647; }
     #jf-tiktok-dialog { width: min(420px, calc(100vw - 16px)); max-width: none; max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px); margin: auto; padding: 12px; overflow: hidden; border: 0; border-radius: 20px; background: #1d1914; color: #fff; direction: rtl; font-family: inherit; }
@@ -44,7 +46,7 @@
     #jf-tiktok-dialog a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 10px; color: #fff; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
     .jf-tiktok-counter { font-size: 12px; color: #e1cfaf; white-space: nowrap; }
     body.jf-tiktok-open { overflow: hidden; }
-    @media (min-width: 900px) { #jf-tiktok-gallery { padding-top: 28px; } .jf-tiktok-heading { padding-inline: 24px; } #jf-tiktok-gallery .jf-tiktok-card { flex-basis: calc((100% - 42px) / 4); max-width: none; } .jf-tiktok-navigation { display: none; } }
+    @media (min-width: 900px) { #jf-tiktok-gallery { padding-top: 28px; } .jf-tiktok-heading { padding-inline: 24px; } #jf-tiktok-gallery .jf-tiktok-card { flex-basis: calc((100% - 42px) / 4); max-width: none; } .jf-tiktok-navigation { display: none; } #jf-tiktok-gallery.jf-tiktok-has-more .jf-tiktok-navigation { display: flex; } }
     @media (max-width: 359px) { #jf-tiktok-title { font-size: 20px; } .jf-tiktok-caption { flex-direction: column; align-items: flex-start; gap: 4px; } }
     @media (prefers-reduced-motion: reduce) { .jf-tiktok-dot::after { transition: none; } }
   `;
@@ -62,6 +64,7 @@
 
     const section = document.createElement('section');
     section.id = 'jf-tiktok-gallery';
+    if (VIDEOS.length > 4) section.classList.add('jf-tiktok-has-more');
     section.setAttribute('aria-labelledby', 'jf-tiktok-title');
     section.innerHTML = `
       <div class="jf-tiktok-heading">
@@ -73,7 +76,7 @@
         ${VIDEOS.map((video, index) => `
           <button type="button" class="jf-tiktok-card" data-video="${index}" aria-label="شغلي مقطع ${video.title}" aria-haspopup="dialog">
             <span class="jf-tiktok-cover">
-              <img src="${COVER_BASE}${video.id}.jpg" width="360" height="640" alt="" loading="lazy" decoding="async">
+              <img src="${COVER_BASE}${video.cover || video.id + '.jpg'}" width="360" height="640" alt="" loading="lazy" decoding="async">
               <span class="jf-tiktok-badge" lang="en">TikTok</span>
               <span class="jf-tiktok-play" aria-hidden="true">▶</span>
             </span>
