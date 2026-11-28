@@ -784,3 +784,67 @@ Salla.onReady(function () {
     }
   }
 });
+
+/* Technical support in the footer contact list. */
+(() => {
+  const SUPPORT_PHONE = '+966557893866';
+  const SUPPORT_URL = 'https://wa.me/' + SUPPORT_PHONE.slice(1);
+
+  function jfMountSupportContact(footer) {
+    const contacts = footer.querySelector('salla-contacts .s-contacts-list');
+    if (!contacts || contacts.querySelector('#jf-support-contact')) return;
+
+    const existingWhatsApp = contacts.querySelector('a[href*="wa.me/"]');
+    const icon = existingWhatsApp && existingWhatsApp.querySelector('.s-contacts-icon');
+    if (!icon) return;
+
+    const item = document.createElement('div');
+    item.id = 'jf-support-contact';
+
+    const link = document.createElement('a');
+    link.className = 's-contacts-item jf-support-link';
+    link.href = SUPPORT_URL;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.setAttribute('aria-label', 'الدعم الفني عبر واتساب: ' + SUPPORT_PHONE);
+    link.title = 'الدعم الفني عبر واتساب';
+    link.style.minHeight = '44px';
+
+    const supportIcon = icon.cloneNode(true);
+    supportIcon.setAttribute('aria-hidden', 'true');
+    const details = document.createElement('span');
+    details.style.display = 'flex';
+    details.style.flexDirection = 'column';
+    details.style.gap = '2px';
+    details.style.lineHeight = '1.6';
+
+    const label = document.createElement('span');
+    label.textContent = 'الدعم الفني';
+    const phone = document.createElement('bdi');
+    phone.dir = 'ltr';
+    phone.textContent = SUPPORT_PHONE;
+    phone.style.whiteSpace = 'nowrap';
+
+    details.append(label, phone);
+    link.append(supportIcon, details);
+    item.appendChild(link);
+    contacts.appendChild(item);
+  }
+
+  function jfInitSupportContact(attempt = 0) {
+    const footer = document.querySelector('footer.store-footer');
+    if (!footer) {
+      if (attempt < 20) setTimeout(() => jfInitSupportContact(attempt + 1), 300);
+      return;
+    }
+    jfMountSupportContact(footer);
+    const observer = new MutationObserver(() => jfMountSupportContact(footer));
+    observer.observe(footer, { childList: true, subtree: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => jfInitSupportContact(), { once: true });
+  } else {
+    jfInitSupportContact();
+  }
+})();
