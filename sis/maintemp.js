@@ -785,66 +785,82 @@ Salla.onReady(function () {
   }
 });
 
-/* Technical support in the footer contact list. */
+/* Label the footer WhatsApp contacts and remove the repeated phone entry. */
 (() => {
+  const ENQUIRIES_PHONE = '+966557042544';
   const SUPPORT_PHONE = '+966557893866';
-  const SUPPORT_URL = 'https://wa.me/' + SUPPORT_PHONE.slice(1);
 
-  function jfMountSupportContact(footer) {
-    const contacts = footer.querySelector('salla-contacts .s-contacts-list');
-    if (!contacts || contacts.querySelector('#jf-support-contact')) return;
+  function jfLabelWhatsAppContact(link, icon, labelText, phoneNumber) {
+    if (link.querySelector('.jf-contact-details')) return;
 
-    const existingWhatsApp = contacts.querySelector('a[href*="wa.me/"]');
-    const icon = existingWhatsApp && existingWhatsApp.querySelector('.s-contacts-icon');
-    if (!icon) return;
-
-    const item = document.createElement('div');
-    item.id = 'jf-support-contact';
-
-    const link = document.createElement('a');
-    link.className = 's-contacts-item jf-support-link';
-    link.href = SUPPORT_URL;
+    link.href = 'https://wa.me/' + phoneNumber.slice(1);
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
-    link.setAttribute('aria-label', 'الدعم الفني عبر واتساب: ' + SUPPORT_PHONE);
-    link.title = 'الدعم الفني عبر واتساب';
+    link.setAttribute('aria-label', labelText + ' عبر واتساب: ' + phoneNumber);
+    link.title = labelText + ' عبر واتساب';
     link.style.minHeight = '44px';
 
-    const supportIcon = icon.cloneNode(true);
-    supportIcon.setAttribute('aria-hidden', 'true');
+    const contactIcon = icon.cloneNode(true);
+    contactIcon.setAttribute('aria-hidden', 'true');
     const details = document.createElement('span');
+    details.className = 'jf-contact-details';
     details.style.display = 'flex';
     details.style.flexDirection = 'column';
     details.style.gap = '2px';
     details.style.lineHeight = '1.6';
 
     const label = document.createElement('span');
-    label.textContent = 'الدعم الفني';
+    label.textContent = labelText;
     const phone = document.createElement('bdi');
     phone.dir = 'ltr';
-    phone.textContent = SUPPORT_PHONE;
+    phone.textContent = phoneNumber;
     phone.style.whiteSpace = 'nowrap';
 
     details.append(label, phone);
-    link.append(supportIcon, details);
+    link.replaceChildren(contactIcon, details);
+  }
+
+  function jfMountFooterContacts(footer) {
+    const contacts = footer.querySelector('salla-contacts .s-contacts-list');
+    if (!contacts) return;
+
+    const enquiries = contacts.querySelector('a[href="https://wa.me/' + ENQUIRIES_PHONE.slice(1) + '"]');
+    const icon = enquiries && enquiries.querySelector('.s-contacts-icon');
+    if (!icon) return;
+
+    jfLabelWhatsAppContact(enquiries, icon, 'للملاحظات والاستفسارات', ENQUIRIES_PHONE);
+
+    contacts.querySelectorAll('a[href^="tel:"]').forEach(link => {
+      if (link.getAttribute('href').slice(4).replace(/\D/g, '') !== ENQUIRIES_PHONE.slice(1)) return;
+      const wrapper = link.parentElement;
+      if (wrapper !== contacts && wrapper.children.length === 1) wrapper.remove();
+      else link.remove();
+    });
+
+    if (contacts.querySelector('#jf-support-contact')) return;
+    const item = document.createElement('div');
+    item.id = 'jf-support-contact';
+    const link = document.createElement('a');
+    link.className = 's-contacts-item jf-support-link';
+    jfLabelWhatsAppContact(link, icon, 'الدعم الفني', SUPPORT_PHONE);
     item.appendChild(link);
     contacts.appendChild(item);
   }
 
-  function jfInitSupportContact(attempt = 0) {
+  function jfInitFooterContacts(attempt = 0) {
     const footer = document.querySelector('footer.store-footer');
     if (!footer) {
-      if (attempt < 20) setTimeout(() => jfInitSupportContact(attempt + 1), 300);
+      if (attempt < 20) setTimeout(() => jfInitFooterContacts(attempt + 1), 300);
       return;
     }
-    jfMountSupportContact(footer);
-    const observer = new MutationObserver(() => jfMountSupportContact(footer));
+    jfMountFooterContacts(footer);
+    const observer = new MutationObserver(() => jfMountFooterContacts(footer));
     observer.observe(footer, { childList: true, subtree: true });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => jfInitSupportContact(), { once: true });
+    document.addEventListener('DOMContentLoaded', () => jfInitFooterContacts(), { once: true });
   } else {
-    jfInitSupportContact();
+    jfInitFooterContacts();
   }
 })();
